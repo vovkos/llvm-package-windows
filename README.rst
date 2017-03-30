@@ -28,7 +28,7 @@ Unfortunately, pre-built packages on the official `LLVM download page <http://re
 	- libcmt (static)
 	- msvcrt (dynamic)
 
-The resulting LLVM binary packages are made publicly available as GitHub release files. Other projects can then download LLVM package archives and unpack LLVM binaries, instead of building LLVM locally.
+The resulting LLVM binary packages are made publicly available as GitHub release artifacts. Other projects can then download LLVM package archives and unpack LLVM binaries, instead of building LLVM locally.
 
 Releases
 --------
