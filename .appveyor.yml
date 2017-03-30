@@ -19,12 +19,6 @@ configuration:
 
 environment:
     matrix:
-        -   TOOLCHAIN: msvc10
-            CRT: libcmt
-
-        -   TOOLCHAIN: msvc10
-            CRT: msvcrt
-
         -   TOOLCHAIN: msvc12
             CRT: libcmt
 
@@ -51,9 +45,6 @@ build_script:
     - cmake --build . --target install
 
     - cd %THIS_DIR%
-
-    - perl patch-llvm-config.pl %LLVM_RELEASE_DIR%\share\llvm\cmake\LLVMConfig.cmake
-    - type %LLVM_RELEASE_DIR%\share\llvm\cmake\LLVMConfig.cmake
 
     - 7z a -t7z %LLVM_RELEASE_FILE% %LLVM_RELEASE_NAME%
 

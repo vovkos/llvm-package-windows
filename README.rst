@@ -12,7 +12,7 @@ Unfortunately, pre-built packages on the official `LLVM download page <http://re
 **llvm-package-windows** project builds all major versions of LLVM for the following, much more complete matrix:
 
 * Toolchain:
-	- Visual Studio 2010
+	- Visual Studio 2010 (LLVM 3.4.2 only)
 	- Visual Studio 2013
 	- Visual Studio 2015
 
@@ -34,3 +34,4 @@ Releases
 --------
 
 * `LLVM 3.4.2 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.4.2>`_
+* `LLVM 3.5.2 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.5.2>`_
