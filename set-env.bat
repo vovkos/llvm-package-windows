@@ -79,7 +79,7 @@ if "%TOOLCHAIN%" == "" goto :msvc14
 if "%TARGET_CPU%" == "" goto :amd64
 if "%CONFIGURATION%" == "" (set CONFIGURATION=Release)
 
-set LLVM_VERSION=3.5.2
+set LLVM_VERSION=3.6.2
 set LLVM_CMAKE_SUBDIR=share/llvm/cmake
 set LLVM_DOWNLOAD_FILE=llvm-%LLVM_VERSION%.src.tar.xz
 set LLVM_DOWNLOAD_URL=http://releases.llvm.org/%LLVM_VERSION%/%LLVM_DOWNLOAD_FILE%
