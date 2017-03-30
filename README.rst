@@ -39,3 +39,4 @@ Releases
 * `LLVM 3.7.1 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.7.1>`_
 * `LLVM 3.8.1 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.8.1>`_
 * `LLVM 3.9.1 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.9.1>`_
+* `LLVM 4.0.0 <https://github.com/vovkos/llvm-package-windows/releases/llvm-4.0.0>`_
