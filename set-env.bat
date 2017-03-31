@@ -1,5 +1,12 @@
 @echo off
 
+:: Reset and loop over arguments
+
+set TARGET_CPU=
+set TOOLCHAIN=
+set CRT=
+set CONFIGURATION=
+
 :loop
 
 if "%1" == "" goto :finalize
@@ -13,6 +20,10 @@ if /i "%1" == "msvc12" goto :msvc12
 if /i "%1" == "msvc14" goto :msvc14
 if /i "%1" == "libcmt" goto :libcmt
 if /i "%1" == "msvcrt" goto :msvcrt
+if /i "%1" == "dbg" goto :dbg
+if /i "%1" == "debug" goto :dbg
+if /i "%1" == "rel" goto :release
+if /i "%1" == "release" goto :release
 
 echo Invalid argument: '%1'
 exit -1
@@ -73,17 +84,34 @@ goto :loop
 
 :: . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
+:: Configuration
+
+:release
+set CONFIGURATION=Release
+set DEBUG_SUFFIX=
+shift
+goto :loop
+
+:dbg
+set CONFIGURATION=Debug
+set DEBUG_SUFFIX=-dbg
+shift
+goto :loop
+
+:: . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
 :finalize
 
-if "%TOOLCHAIN%" == "" goto :msvc14
 if "%TARGET_CPU%" == "" goto :amd64
-if "%CONFIGURATION%" == "" (set CONFIGURATION=Release)
+if "%TOOLCHAIN%" == "" goto :msvc14
+if "%CRT%" == "" goto :libcmt
+if "%CONFIGURATION%" == "" goto :release
 
 set LLVM_VERSION=4.0.0
 set LLVM_CMAKE_SUBDIR=share/llvm/cmake
 set LLVM_DOWNLOAD_FILE=llvm-%LLVM_VERSION%.src.tar.xz
 set LLVM_DOWNLOAD_URL=http://releases.llvm.org/%LLVM_VERSION%/%LLVM_DOWNLOAD_FILE%
-set LLVM_RELEASE_NAME=llvm-%LLVM_VERSION%-%TARGET_CPU%-%TOOLCHAIN%-%CRT%
+set LLVM_RELEASE_NAME=llvm-%LLVM_VERSION%-windows-%TARGET_CPU%-%TOOLCHAIN%-%CRT%%DEBUG_SUFFIX%
 set LLVM_RELEASE_FILE=%LLVM_RELEASE_NAME%.7z
 set LLVM_RELEASE_DIR=%APPVEYOR_BUILD_FOLDER%\%LLVM_RELEASE_NAME%
 set LLVM_INSTALL_PREFIX=%LLVM_RELEASE_DIR:\=/%
