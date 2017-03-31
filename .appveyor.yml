@@ -34,9 +34,9 @@ build_script:
 
     - mkdir llvm\build
     - cd llvm\build
-    - cmake .. %CMAKE_FLAGS%
-    - cmake --build . -- %MSBUILD_FLAGS%
-    - cmake --build . --target install
+    - cmake .. %CMAKE_CONFIGURE_FLAGS%
+    - cmake --build . %CMAKE_BUILD_FLAGS%
+    - cmake --build . --target install %CMAKE_BUILD_FLAGS%
 
     - cd %THIS_DIR%
 

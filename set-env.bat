@@ -116,10 +116,9 @@ set LLVM_RELEASE_FILE=%LLVM_RELEASE_NAME%.7z
 set LLVM_RELEASE_DIR=%APPVEYOR_BUILD_FOLDER%\%LLVM_RELEASE_NAME%
 set LLVM_INSTALL_PREFIX=%LLVM_RELEASE_DIR:\=/%
 
-set CMAKE_FLAGS= ^
+set CMAKE_CONFIGURE_FLAGS= ^
 	-G "%CMAKE_GENERATOR%%CMAKE_GENERATOR_SUFFIX%" ^
 	-DCMAKE_INSTALL_PREFIX=%LLVM_INSTALL_PREFIX% ^
-	-DCMAKE_BUILD_TYPE=%BUILD_CONFIGURATION% ^
 	-DLLVM_USE_CRT_DEBUG=%LLVM_CRT%d ^
 	-DLLVM_USE_CRT_RELEASE=%LLVM_CRT% ^
 	-DLLVM_USE_CRT_MINSIZEREL=%LLVM_CRT% ^
@@ -132,16 +131,16 @@ set CMAKE_FLAGS= ^
 	-DLLVM_INCLUDE_TESTS=OFF ^
 	-DLLVM_INCLUDE_TOOLS=OFF ^
 	-DLLVM_INCLUDE_UTILS=OFF
-
-set MSBUILD_FLAGS= ^
+	
+set CMAKE_BUILD_FLAGS= ^
+	--config %CONFIGURATION% ^
+	-- ^
 	/nologo ^
 	/verbosity:minimal ^
-	/consoleloggerparameters:Summary ^
-	/property:configuration=%CONFIGURATION% ^
-	/maxcpucount
+	/consoleloggerparameters:Summary
 
 echo ---------------------------------------------------------------------------
-echo LLVM_DOWNLOAD_URL: %LLVM_DOWNLOAD_URL:\t=\n%
+echo LLVM_DOWNLOAD_URL: %LLVM_DOWNLOAD_URL%
 echo LLVM_CMAKE_SUBDIR: %LLVM_CMAKE_SUBDIR%
 echo LLVM_RELEASE_FILE: %LLVM_RELEASE_FILE%
 echo ---------------------------------------------------------------------------
