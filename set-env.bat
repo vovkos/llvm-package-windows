@@ -107,7 +107,7 @@ if "%TOOLCHAIN%" == "" goto :msvc14
 if "%CRT%" == "" goto :libcmt
 if "%CONFIGURATION%" == "" goto :release
 
-set LLVM_VERSION=4.0.1
+set LLVM_VERSION=5.0.1
 set LLVM_CMAKE_SUBDIR=share/llvm/cmake
 set LLVM_DOWNLOAD_FILE=llvm-%LLVM_VERSION%.src.tar.xz
 set LLVM_DOWNLOAD_URL=http://releases.llvm.org/%LLVM_VERSION%/%LLVM_DOWNLOAD_FILE%
