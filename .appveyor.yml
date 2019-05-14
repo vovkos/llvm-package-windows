@@ -25,50 +25,32 @@ environment:
         -   TOOLCHAIN: msvc14
             CRT: msvcrt
 
-# install:
-#     - call set-env.bat %CONFIGURATION% %PLATFORM% %TOOLCHAIN% %CRT%
-#     - call install.bat
+install:
+    - call set-env.bat %CONFIGURATION% %PLATFORM% %TOOLCHAIN% %CRT%
+    - call install.bat
 
 build_script:
-    - rd /S /Q c:\cygwin
-    - rd /S /Q c:\cygwin64
-    - rd /S /Q c:\winddk
-    - rd /S /Q c:\mingw
-    - rd /S /Q c:\mingw-w64
-    - rd /S /Q "c:\Program Files\LLVM"
-    - rd /S /Q "c:\Program Files\Microsoft Visual Studio 9.0"
-    - rd /S /Q "c:\Program Files\Microsoft Visual Studio 10.0"
-    - rd /S /Q "c:\Program Files\Microsoft Visual Studio 11.0"
-    - rd /S /Q "c:\Program Files\Microsoft Visual Studio 12.0"
-    - rd /S /Q "c:\Program Files (x86)\Microsoft Office"
-    - rd /S /Q "c:\Program Files (x86)\Microsoft Office365 Tools"
-    - rd /S /Q "c:\Program Files (x86)\Microsoft Visual Studio 9.0"
-    - rd /S /Q "c:\Program Files (x86)\Microsoft Visual Studio 10.0"
-    - rd /S /Q "c:\Program Files (x86)\Microsoft Visual Studio 11.0"
-    - rd /S /Q "c:\Program Files (x86)\Microsoft Visual Studio 12.0"
+    - set THIS_DIR=%CD%
 
-    - dir c:\
-    - dir "c:\Program Files"
-    - dir "c:\Program Files (x86)"
+    - perl patch-add-llvm.pl llvm\cmake\modules\AddLLVM.cmake
+    - type llvm\cmake\modules\AddLLVM.cmake
 
-#    - set THIS_DIR=%CD%
-#
-#    - perl patch-add-llvm.pl llvm\cmake\modules\AddLLVM.cmake
-#    - type llvm\cmake\modules\AddLLVM.cmake
-#
-#    - mkdir llvm\build
-#    - cd llvm\build
-#    - cmake .. %CMAKE_CONFIGURE_FLAGS%
-#    - cmake --build . %CMAKE_BUILD_FLAGS%
-#    - cmake --build . --target install %CMAKE_BUILD_FLAGS%
-#
-#    - cd %THIS_DIR%
-#
-#    - 7z a -t7z %LLVM_RELEASE_FILE% %LLVM_RELEASE_NAME%
-#
-#artifacts:
-#    -   path: $(LLVM_RELEASE_FILE)
-#        name: llvm_package
+    - mkdir llvm\build
+    - cd llvm\build
+    - cmake .. %LLVM_CMAKE_CONFIGURE_FLAGS%
+    - cmake --build . %CMAKE_BUILD_FLAGS%
+    - cmake --build . --target install %CMAKE_BUILD_FLAGS%
+
+    - cd %THIS_DIR%
+
+    - 7z a -t7z %LLVM_RELEASE_FILE% %LLVM_RELEASE_NAME%
+
+artifacts:
+    -   path: $(LLVM_RELEASE_FILE)
+        name: llvm_package
+
+    -   path: $(CLANG_RELEASE_FILE)
+        name: clang_package
 
 deploy:
     description: '$(APPVEYOR_REPO_TAG_NAME)'
