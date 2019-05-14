@@ -43,6 +43,10 @@ appveyor DownloadFile %LLVM_DOWNLOAD_URL% -FileName %APPVEYOR_BUILD_FOLDER%\%LLV
 7z x -y %APPVEYOR_BUILD_FOLDER%\llvm-%LLVM_VERSION%.src.tar -o%APPVEYOR_BUILD_FOLDER%
 ren %APPVEYOR_BUILD_FOLDER%\llvm-%LLVM_VERSION%.src llvm
 
+:: patch AddLLVM.cmake to also install PDBs on Debug builds
+
+perl patch-add-llvm.pl llvm\cmake\modules\AddLLVM.cmake
+
 :: . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
 :: Download Clang

@@ -32,9 +32,6 @@ install:
 build_script:
     - set THIS_DIR=%CD%
 
-    - perl patch-add-llvm.pl llvm\cmake\modules\AddLLVM.cmake
-    - type llvm\cmake\modules\AddLLVM.cmake
-
     - mkdir llvm\build
     - cd llvm\build
     - cmake .. %LLVM_CMAKE_CONFIGURE_FLAGS%
