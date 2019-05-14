@@ -25,26 +25,30 @@ environment:
         -   TOOLCHAIN: msvc14
             CRT: msvcrt
 
-install:
-    - call set-env.bat %CONFIGURATION% %PLATFORM% %TOOLCHAIN% %CRT%
-    - call install.bat
+# install:
+#     - call set-env.bat %CONFIGURATION% %PLATFORM% %TOOLCHAIN% %CRT%
+#     - call install.bat
 
 build_script:
-    - set THIS_DIR=%CD%
+    - dir c:\
+    - dir "c:\Program Files"
+    - dir "c:\Program Files (x86)"
 
-    - perl patch-add-llvm.pl llvm\cmake\modules\AddLLVM.cmake
-    - type llvm\cmake\modules\AddLLVM.cmake
-
-    - mkdir llvm\build
-    - cd llvm\build
-    - cmake .. %CMAKE_CONFIGURE_FLAGS%
-    - cmake --build . %CMAKE_BUILD_FLAGS%
-    - cmake --build . --target install %CMAKE_BUILD_FLAGS%
-
-    - cd %THIS_DIR%
-
-    - 7z a -t7z %LLVM_RELEASE_FILE% %LLVM_RELEASE_NAME%
-
+#    - set THIS_DIR=%CD%
+#
+#    - perl patch-add-llvm.pl llvm\cmake\modules\AddLLVM.cmake
+#    - type llvm\cmake\modules\AddLLVM.cmake
+#
+#    - mkdir llvm\build
+#    - cd llvm\build
+#    - cmake .. %CMAKE_CONFIGURE_FLAGS%
+#    - cmake --build . %CMAKE_BUILD_FLAGS%
+#    - cmake --build . --target install %CMAKE_BUILD_FLAGS%
+#
+#    - cd %THIS_DIR%
+#
+#    - 7z a -t7z %LLVM_RELEASE_FILE% %LLVM_RELEASE_NAME%
+#
 artifacts:
     -   path: $(LLVM_RELEASE_FILE)
         name: llvm_package
