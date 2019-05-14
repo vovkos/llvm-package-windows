@@ -89,12 +89,17 @@ goto :loop
 :release
 set CONFIGURATION=Release
 set DEBUG_SUFFIX=
+set CMAKE_CONFIGURE_EXTRA_FLAGS=
 shift
 goto :loop
+
+:: don't try to build Debug tools -- executables will be huge and not really
+:: essential (whoever needs tools, can just download a Release build)
 
 :dbg
 set CONFIGURATION=Debug
 set DEBUG_SUFFIX=-dbg
+:: set CMAKE_CONFIGURE_EXTRA_FLAGS=-DLLVM_INCLUDE_TOOLS=OFF
 shift
 goto :loop
 
@@ -107,7 +112,7 @@ if "%TOOLCHAIN%" == "" goto :msvc14
 if "%CRT%" == "" goto :libcmt
 if "%CONFIGURATION%" == "" goto :release
 
-set LLVM_VERSION=7.0.0
+set LLVM_VERSION=8.0.0
 set LLVM_CMAKE_SUBDIR=share/llvm/cmake
 set LLVM_DOWNLOAD_FILE=llvm-%LLVM_VERSION%.src.tar.xz
 set LLVM_DOWNLOAD_URL=http://releases.llvm.org/%LLVM_VERSION%/%LLVM_DOWNLOAD_FILE%
@@ -134,8 +139,8 @@ set CMAKE_CONFIGURE_FLAGS= ^
 	-DLLVM_INCLUDE_GO_TESTS=OFF ^
 	-DLLVM_INCLUDE_RUNTIMES=OFF ^
 	-DLLVM_INCLUDE_TESTS=OFF ^
-	-DLLVM_INCLUDE_TOOLS=ON ^
-	-DLLVM_INCLUDE_UTILS=OFF
+	-DLLVM_INCLUDE_UTILS=OFF ^
+	%CMAKE_CONFIGURE_EXTRA_FLAGS%
 
 set CMAKE_BUILD_FLAGS= ^
 	--config %CONFIGURATION% ^
