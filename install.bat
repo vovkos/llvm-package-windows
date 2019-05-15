@@ -45,7 +45,9 @@ ren %APPVEYOR_BUILD_FOLDER%\llvm-%LLVM_VERSION%.src llvm
 
 :: patch AddLLVM.cmake to also install PDBs on Debug builds
 
-:: perl patch-add-llvm.pl llvm\cmake\modules\AddLLVM.cmake
+if "%CONFIGURATION%" == "Debug" (
+	perl patch-add-llvm.pl llvm\cmake\modules\AddLLVM.cmake
+)
 
 :: . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 

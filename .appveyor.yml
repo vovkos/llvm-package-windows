@@ -42,6 +42,8 @@ build_script:
 
     - 7z a -t7z %LLVM_RELEASE_FILE% %LLVM_RELEASE_NAME%
 
+    - dir \
+
 artifacts:
     -   path: $(LLVM_RELEASE_FILE)
         name: llvm_package
