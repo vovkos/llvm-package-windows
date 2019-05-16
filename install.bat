@@ -10,17 +10,6 @@ rd /S /Q "c:\winddk"
 rd /S /Q "c:\mingw"
 rd /S /Q "c:\mingw-w64"
 rd /S /Q "c:\qt"
-rd /S /Q "c:\Program Files\LLVM"
-rd /S /Q "c:\Program Files\Microsoft Visual Studio 9.0"
-rd /S /Q "c:\Program Files\Microsoft Visual Studio 10.0"
-rd /S /Q "c:\Program Files\Microsoft Visual Studio 11.0"
-rd /S /Q "c:\Program Files\Microsoft Visual Studio 12.0"
-rd /S /Q "c:\Program Files (x86)\Microsoft Office"
-rd /S /Q "c:\Program Files (x86)\Microsoft Office365 Tools"
-rd /S /Q "c:\Program Files (x86)\Microsoft Visual Studio 9.0"
-rd /S /Q "c:\Program Files (x86)\Microsoft Visual Studio 10.0"
-rd /S /Q "c:\Program Files (x86)\Microsoft Visual Studio 11.0"
-rd /S /Q "c:\Program Files (x86)\Microsoft Visual Studio 12.0"
 
 :: . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 

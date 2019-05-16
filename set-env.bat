@@ -18,6 +18,7 @@ if /i "%1" == "x64" goto :amd64
 if /i "%1" == "msvc10" goto :msvc10
 if /i "%1" == "msvc12" goto :msvc12
 if /i "%1" == "msvc14" goto :msvc14
+if /i "%1" == "msvc15" goto :msvc15
 if /i "%1" == "libcmt" goto :libcmt
 if /i "%1" == "msvcrt" goto :msvcrt
 if /i "%1" == "dbg" goto :dbg

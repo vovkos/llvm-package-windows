@@ -1,4 +1,6 @@
-image: Visual Studio 2015
+image:
+    - Visual Studio 2017
+    - Visual Studio 2015
 
 init:
     - git config --global core.autocrlf input
@@ -19,11 +21,21 @@ configuration:
 
 environment:
     matrix:
-        -   TOOLCHAIN: msvc14
+        -   APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+            TOOLCHAIN: msvc15
+            CRT: msvcrt
+
+        -   APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+            TOOLCHAIN: msvc15
             CRT: libcmt
 
-        -   TOOLCHAIN: msvc14
+        -   APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+            TOOLCHAIN: msvc14
             CRT: msvcrt
+
+        -   APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+            TOOLCHAIN: msvc14
+            CRT: libcmt
 
 install:
     - call set-env.bat %CONFIGURATION% %PLATFORM% %TOOLCHAIN% %CRT%
