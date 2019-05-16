@@ -17,14 +17,14 @@ configuration:
     - Release
 
 environment:
-    LLVM_VERSION: 3.4.2
+    LLVM_VERSION: 3.5.2
 
     matrix:
-        -   TOOLCHAIN: msvc10
-            CRT: msvcrt
-
-        -   TOOLCHAIN: msvc10
-            CRT: libcmt
+#        -   TOOLCHAIN: msvc10
+#            CRT: msvcrt
+#
+#        -   TOOLCHAIN: msvc10
+#            CRT: libcmt
 
         -   TOOLCHAIN: msvc12
             CRT: msvcrt
@@ -83,9 +83,6 @@ build_script:
 artifacts:
     -   path: $(LLVM_RELEASE_FILE)
         name: llvm_package
-
-    -   path: $(CLANG_RELEASE_FILE)
-        name: clang_package
 
 deploy:
     description: '$(APPVEYOR_REPO_TAG_NAME)'
