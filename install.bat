@@ -11,7 +11,7 @@ set DEL_DIR_LIST= ^
 	"c:\mingw" ^
 	"c:\mingw-64" ^
 	"c:\qt" ^
-	"c:\libraries"
+	"c:\libraries" ^
 	"c:\Program Files\LLVM"
 
 :: get rid of annoying Xamarin build warnings
@@ -30,7 +30,7 @@ for %%f in (%DEL_DIR_LIST%) do (
 for %%f in (%DEL_FILE_LIST%) do (
 	if exist %%f (
 		echo Deleting: %%f
-		del /F %f
+		del /F %%f
 	)
 )
 
@@ -43,21 +43,26 @@ appveyor DownloadFile %LLVM_DOWNLOAD_URL% -FileName %APPVEYOR_BUILD_FOLDER%\%LLV
 7z x -y %APPVEYOR_BUILD_FOLDER%\llvm-%LLVM_VERSION%.src.tar -o%APPVEYOR_BUILD_FOLDER%
 ren %APPVEYOR_BUILD_FOLDER%\llvm-%LLVM_VERSION%.src llvm
 
-:: on Debug builds:
-:: - patch CMakeLists.txt to always build and install llvm-config
-:: - patch AddLLVM.cmake to also install PDBs on Debug builds
-
-if "%CONFIGURATION%" == "Debug" (
-	echo "set_target_properties(llvm-config PROPERTIES EXCLUDE_FROM_ALL FALSE)" >> llvm/CMakeLists.txt
-	echo "install(TARGETS llvm-config RUNTIME DESTINATION bin)" >> llvm/CMakeLists.txt
-	perl patch-add-llvm.pl llvm\cmake\modules\AddLLVM.cmake
-)
-
-:: . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-
 :: download Clang
 
 :: appveyor DownloadFile %CLANG_DOWNLOAD_URL% -FileName %APPVEYOR_BUILD_FOLDER%\%CLANG_DOWNLOAD_FILE%
 :: 7z x -y %APPVEYOR_BUILD_FOLDER%\%CLANG_DOWNLOAD_FILE% -o%APPVEYOR_BUILD_FOLDER%
 :: 7z x -y %APPVEYOR_BUILD_FOLDER%\cfe-%LLVM_VERSION%.src.tar -o%APPVEYOR_BUILD_FOLDER%
 :: ren %APPVEYOR_BUILD_FOLDER%\cfe-%LLVM_VERSION%.src clang
+
+if "%CONFIGURATION%" == "Debug" goto dbg
+goto :eof
+
+:: . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+:: on Debug builds:
+:: - patch llvm-config/CMakeLists.txt to always build and install llvm-config
+:: - patch AddLLVM.cmake to also install PDBs on Debug builds
+
+:dbg
+
+echo set_target_properties(llvm-config PROPERTIES EXCLUDE_FROM_ALL FALSE) >> llvm/tools/llvm-config/CMakeLists.txt
+echo install(TARGETS llvm-config RUNTIME DESTINATION bin) >> llvm/tools/llvm-config/CMakeLists.txt
+type llvm\tools\llvm-config\CMakeLists.txt
+
+perl patch-add-llvm.pl llvm\cmake\modules\AddLLVM.cmake
