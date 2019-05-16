@@ -4,7 +4,7 @@
 
 :: Delete unnecessary packages
 
-dir
+dir \
 
 rd /S /Q "c:\cygwin"
 rd /S /Q "c:\cygwin64"
@@ -33,6 +33,11 @@ appveyor DownloadFile %LLVM_DOWNLOAD_URL% -FileName %APPVEYOR_BUILD_FOLDER%\%LLV
 7z x -y %APPVEYOR_BUILD_FOLDER%\%LLVM_DOWNLOAD_FILE% -o%APPVEYOR_BUILD_FOLDER%
 7z x -y %APPVEYOR_BUILD_FOLDER%\llvm-%LLVM_VERSION%.src.tar -o%APPVEYOR_BUILD_FOLDER%
 ren %APPVEYOR_BUILD_FOLDER%\llvm-%LLVM_VERSION%.src llvm
+
+:: patch CMakeLists.cmake to always build and install llvm-config
+
+echo "set_target_properties(llvm-config PROPERTIES EXCLUDE_FROM_ALL FALSE)" >> llvm/CMakeLists.cmake
+echo "install(TARGETS llvm-config RUNTIME DESTINATION bin)" >> llvm/CMakeLists.cmake
 
 :: patch AddLLVM.cmake to also install PDBs on Debug builds
 

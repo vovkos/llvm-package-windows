@@ -1,6 +1,6 @@
 image:
-    - Visual Studio 2017
     - Visual Studio 2015
+    - Visual Studio 2017
 
 init:
     - git config --global core.autocrlf input
@@ -17,28 +17,48 @@ configuration:
     - Release
 
 environment:
+    LLVM_VERSION: 3.4.2
+
     matrix:
-        -   TOOLCHAIN: msvc15
+        -   TOOLCHAIN: msvc10
             CRT: msvcrt
 
-        -   TOOLCHAIN: msvc15
+        -   TOOLCHAIN: msvc10
+            CRT: libcmt
+
+        -   TOOLCHAIN: msvc12
+            CRT: msvcrt
+
+        -   TOOLCHAIN: msvc12
             CRT: libcmt
 
         -   TOOLCHAIN: msvc14
             CRT: msvcrt
 
         -   TOOLCHAIN: msvc14
+            CRT: libcmt
+
+        -   TOOLCHAIN: msvc15
+            CRT: msvcrt
+
+        -   TOOLCHAIN: msvc15
             CRT: libcmt
 
 matrix:
     fast_finish: false
 
     exclude:
-        -   image: Visual Studio 2017
-            TOOLCHAIN: msvc14
-
         -   image: Visual Studio 2015
             TOOLCHAIN: msvc15
+
+        -   image: Visual Studio 2017
+            TOOLCHAIN: msvc10
+
+        -   image: Visual Studio 2017
+            TOOLCHAIN: msvc12
+
+        -   image: Visual Studio 2017
+            TOOLCHAIN: msvc14
 
 
 install:
