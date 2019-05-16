@@ -2,27 +2,36 @@
 
 :: . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
-:: delete unnecessary packages
+:: delete unnecessary big directories
 
-dir \
-
-rd /S /Q "c:\cygwin"
-rd /S /Q "c:\cygwin64"
-rd /S /Q "c:\winddk"
-rd /S /Q "c:\mingw"
-rd /S /Q "c:\mingw-w64"
-rd /S /Q "c:\qt"
-
-:: . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+set DEL_DIR_LIST= ^
+	"c:\cygwin" ^
+	"c:\cygwin64" ^
+	"c:\winddk" ^
+	"c:\mingw" ^
+	"c:\mingw-64" ^
+	"c:\qt" ^
+	"c:\libraries"
+	"c:\Program Files\LLVM"
 
 :: get rid of annoying Xamarin build warnings
 
-if exist "c:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets" (
-	del "c:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets"
+set DEL_FILE_LIST= ^
+	"c:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets" ^
+	"c:\Program Files (x86)\MSBuild\4.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets"
+
+for %%f in (%DEL_DIR_LIST%) do (
+	if exist %%f (
+		echo Deleting: %%f
+		rd /S /Q %%f
+	)
 )
 
-if exist "c:\Program Files (x86)\MSBuild\4.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets" (
-	del "c:\Program Files (x86)\MSBuild\4.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets"
+for %%f in (%DEL_FILE_LIST%) do (
+	if exist %%f (
+		echo Deleting: %%f
+		del /F %f
+	)
 )
 
 :: . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -35,12 +44,12 @@ appveyor DownloadFile %LLVM_DOWNLOAD_URL% -FileName %APPVEYOR_BUILD_FOLDER%\%LLV
 ren %APPVEYOR_BUILD_FOLDER%\llvm-%LLVM_VERSION%.src llvm
 
 :: on Debug builds:
-:: - patch CMakeLists.cmake to always build and install llvm-config
+:: - patch CMakeLists.txt to always build and install llvm-config
 :: - patch AddLLVM.cmake to also install PDBs on Debug builds
 
 if "%CONFIGURATION%" == "Debug" (
-	echo "set_target_properties(llvm-config PROPERTIES EXCLUDE_FROM_ALL FALSE)" >> llvm/CMakeLists.cmake
-	echo "install(TARGETS llvm-config RUNTIME DESTINATION bin)" >> llvm/CMakeLists.cmake
+	echo "set_target_properties(llvm-config PROPERTIES EXCLUDE_FROM_ALL FALSE)" >> llvm/CMakeLists.txt
+	echo "install(TARGETS llvm-config RUNTIME DESTINATION bin)" >> llvm/CMakeLists.txt
 	perl patch-add-llvm.pl llvm\cmake\modules\AddLLVM.cmake
 )
 
