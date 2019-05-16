@@ -4,6 +4,8 @@
 
 :: Delete unnecessary packages
 
+dir
+
 rd /S /Q "c:\cygwin"
 rd /S /Q "c:\cygwin64"
 rd /S /Q "c:\winddk"

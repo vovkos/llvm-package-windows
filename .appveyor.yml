@@ -8,9 +8,6 @@ init:
 clone_folder: c:\projects\llvm
 shallow_clone: true
 
-matrix:
-    fast_finish: false
-
 platform:
     - x64
     - x86
@@ -21,21 +18,28 @@ configuration:
 
 environment:
     matrix:
-        -   APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-            TOOLCHAIN: msvc15
+        -   TOOLCHAIN: msvc15
             CRT: msvcrt
 
-        -   APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-            TOOLCHAIN: msvc15
+        -   TOOLCHAIN: msvc15
             CRT: libcmt
 
-        -   APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-            TOOLCHAIN: msvc14
+        -   TOOLCHAIN: msvc14
             CRT: msvcrt
 
-        -   APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-            TOOLCHAIN: msvc14
+        -   TOOLCHAIN: msvc14
             CRT: libcmt
+
+matrix:
+    fast_finish: false
+
+    exclude:
+        -   image: Visual Studio 2017
+            TOOLCHAIN: msvc14
+
+        -   image: Visual Studio 2015
+            TOOLCHAIN: msvc15
+
 
 install:
     - call set-env.bat %CONFIGURATION% %PLATFORM% %TOOLCHAIN% %CRT%
