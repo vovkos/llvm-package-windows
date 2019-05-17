@@ -12,7 +12,7 @@ while (my $s = <$file>)
 		push (@body, "\n");
 		push (@body, "  set_target_properties(\${name} PROPERTIES COMPILE_PDB_NAME \${name})\n");
 		push (@body, "  get_target_property(type \${name} TYPE)\n");
-		push (@body, "  if(${type} strequal \"STATIC_LIBRARY\")\n");
+		push (@body, "  if(\${type} strequal \"STATIC_LIBRARY\")\n");
 		push (@body, "    get_target_property(dir \${name} ARCHIVE_OUTPUT_DIRECTORY_DEBUG)\n");
 		push (@body, "  else())\n");
 		push (@body, "    get_target_property(dir \${name} LIBRARY_OUTPUT_DIRECTORY_DEBUG)\n");
