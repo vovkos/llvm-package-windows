@@ -14,9 +14,9 @@ while (my $s = <$file>)
 		push (@body, "  get_target_property(type \${name} TYPE)\n");
 		push (@body, "  if(\${type} strequal \"STATIC_LIBRARY\")\n");
 		push (@body, "    get_target_property(dir \${name} ARCHIVE_OUTPUT_DIRECTORY_DEBUG)\n");
-		push (@body, "  else())\n");
+		push (@body, "  else()\n");
 		push (@body, "    get_target_property(dir \${name} LIBRARY_OUTPUT_DIRECTORY_DEBUG)\n");
-		push (@body, "  endif())\n");
+		push (@body, "  endif()\n");
 		push (@body, "  if(dir)\n");
 		push (@body, "    install(FILES \${dir}/\${name}.pdb CONFIGURATIONS Debug DESTINATION lib\${LLVM_LIBDIR_SUFFIX})\n");
 		push (@body, "  endif(dir)\n");
