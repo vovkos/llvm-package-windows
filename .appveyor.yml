@@ -17,7 +17,7 @@ configuration:
     - Release
 
 environment:
-    LLVM_VERSION: 3.6.2
+    LLVM_VERSION: 3.9.1
 
     matrix:
 #        -   TOOLCHAIN: msvc10
