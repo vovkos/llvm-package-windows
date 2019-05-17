@@ -8,7 +8,7 @@ my $patch = '
 
   set_target_properties(${name} PROPERTIES COMPILE_PDB_NAME ${name})
   get_target_property(type ${name} TYPE)
-  if(${type} strequal "STATIC_LIBRARY")
+  if(${type} STREQUAL "STATIC_LIBRARY")
     get_target_property(dir ${name} ARCHIVE_OUTPUT_DIRECTORY_DEBUG)
   else()
     get_target_property(dir ${name} LIBRARY_OUTPUT_DIRECTORY_DEBUG)

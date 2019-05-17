@@ -4,28 +4,30 @@
 
 :: delete unnecessary big directories
 
-set DEL_DIR_LIST= ^
-	"c:\cygwin" ^
-	"c:\cygwin64" ^
-	"c:\winddk" ^
-	"c:\mingw" ^
-	"c:\mingw-64" ^
-	"c:\qt" ^
-	"c:\libraries" ^
-	"c:\Program Files\LLVM"
+::	set DEL_DIR_LIST= ^
+::		"c:\cygwin" ^
+::		"c:\cygwin64" ^
+::		"c:\winddk" ^
+::		"c:\mingw" ^
+::		"c:\mingw-64" ^
+::		"c:\qt" ^
+::		"c:\libraries" ^
+::		"c:\Program Files\LLVM"
+::
+::	for %%f in (%DEL_DIR_LIST%) do (
+::		if exist %%f (
+::			echo Deleting: %%f
+::			rd /S /Q %%f
+::		)
+::	)
+
+:: . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
 :: get rid of annoying Xamarin build warnings
 
 set DEL_FILE_LIST= ^
 	"c:\Program Files (x86)\MSBuild\14.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets" ^
 	"c:\Program Files (x86)\MSBuild\4.0\Microsoft.Common.targets\ImportAfter\Xamarin.Common.targets"
-
-for %%f in (%DEL_DIR_LIST%) do (
-	if exist %%f (
-		echo Deleting: %%f
-		rd /S /Q %%f
-	)
-)
 
 for %%f in (%DEL_FILE_LIST%) do (
 	if exist %%f (
