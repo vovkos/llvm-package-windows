@@ -65,4 +65,4 @@ echo set_target_properties(llvm-config PROPERTIES EXCLUDE_FROM_ALL FALSE) >> llv
 echo install(TARGETS llvm-config RUNTIME DESTINATION bin) >> llvm/tools/llvm-config/CMakeLists.txt
 type llvm\tools\llvm-config\CMakeLists.txt
 
-perl patch-add-llvm.pl llvm\cmake\modules\AddLLVM.cmake
+perl pdb-patch.pl llvm\cmake\modules\AddLLVM.cmake
