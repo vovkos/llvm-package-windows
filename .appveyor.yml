@@ -17,7 +17,7 @@ configuration:
     - Release
 
 environment:
-    LLVM_VERSION: 3.9.1
+    LLVM_VERSION: 3.6.2
 
     # 3.4.2 ............ builds on msvc10 and up
     # 3.5.2 ............ builds on msvc12 only

@@ -7,12 +7,6 @@ LLVM packages for Windows
 Releases
 --------
 
-* `LLVM 4.0.0 <https://github.com/vovkos/llvm-package-windows/releases/llvm-4.0.0>`_
-* `LLVM 3.9.1 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.9.1>`_
-* `LLVM 3.8.1 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.8.1>`_
-* `LLVM 3.7.1 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.7.1>`_
-* `LLVM 3.6.2 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.6.2>`_
-* `LLVM 3.5.2 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.5.2>`_
 * `LLVM 3.4.2 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.4.2>`_
 
 Abstract
@@ -27,7 +21,7 @@ The ``llvm-package-travis`` project builds all major versions of LLVM on AppVeyo
 * Toolchain:
 	- Visual Studio 2010 (LLVM 3.4.2 only)
 	- Visual Studio 2013 (LLVM 3.4.2 to 3.9.1)
-	- Visual Studio 2015 (LLVM 3.4.2 to 3.9.1)
+	- Visual Studio 2015 (LLVM 3.4.2 to 8.0.0)
 	- Visual Studio 2017 (LLVM 3.4.2 to 8.0.0)
 
 * Configuration:
