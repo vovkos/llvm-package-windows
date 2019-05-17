@@ -3,11 +3,14 @@ LLVM packages for Windows
 
 .. image:: https://ci.appveyor.com/api/projects/status/ucw3sn0e80cd1hc9?svg=true
 	:target: https://ci.appveyor.com/project/vovkos/llvm-package-windows
+.. image:: https://img.shields.io/badge/donate-@jancy.org-blue.svg
+	:align: right
+	:target: http://jancy.org/donate.html?donate=llvm-package
 
 Releases
 --------
 
-* `LLVM 3.4.2 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.4.2>`_
+* `LLVM 3.4.2 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.4.2-a>`_
 
 Abstract
 --------
