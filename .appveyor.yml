@@ -19,10 +19,11 @@ configuration:
 environment:
     LLVM_VERSION: 3.9.1
 
-    # 3.4.2 builds on msvc10 and up
-    # 3.9.1 builds on msvc12 and up
-    # 4.0.1 builds on msvc14 and up
-    # 8.0.0 builds on msvc15 and up
+    # 3.4.2 ............ builds on msvc10 and up
+    # 3.5.2 ............ builds on msvc12 only
+    # 3.6.0 to 3.9.1 ... build on msvc12 and up
+    # 4.0.1 to 7.1.0 ... build on msvc14 and up
+    # 8.0.0 ............ builds on msvc15 and up
 
     matrix:
 #        -   TOOLCHAIN: msvc10

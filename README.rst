@@ -4,17 +4,31 @@ LLVM packages for Windows
 .. image:: https://ci.appveyor.com/api/projects/status/ucw3sn0e80cd1hc9?svg=true
 	:target: https://ci.appveyor.com/project/vovkos/llvm-package-windows
 
+Releases
+--------
+
+* `LLVM 4.0.0 <https://github.com/vovkos/llvm-package-windows/releases/llvm-4.0.0>`_
+* `LLVM 3.9.1 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.9.1>`_
+* `LLVM 3.8.1 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.8.1>`_
+* `LLVM 3.7.1 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.7.1>`_
+* `LLVM 3.6.2 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.6.2>`_
+* `LLVM 3.5.2 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.5.2>`_
+* `LLVM 3.4.2 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.4.2>`_
+
 Abstract
 --------
 
-Unfortunately, pre-built packages on the official `LLVM download page <http://releases.llvm.org>`_ cover but a tiny fraction of the possible build configuration matrix on Microsoft Windows.
+LLVM is huge, and it's getting bigger with each and every release. Building it together with a project which depends on it (e.g. an LLVM-targeting programming language) during a CI build is **not an option** -- building *LLVM itself* eats most (earlier LLVM releases) and all (recent LLVM releases) of the allotted CI build time.
 
-**llvm-package-windows** project builds all major versions of LLVM for the following, much more complete matrix:
+So why not using pre-built packages from the official `LLVM download page <http://releases.llvm.org>`_? Unfortunately, the official binaries cover just a *tiny fraction* of possible build configurations on Microsoft Windows. There are no Debug libraries, no builds for the static LIBCMT, and only a single toolchain per LLVM release.
+
+The ``llvm-package-travis`` project builds all major versions of LLVM on AppVeyor CI for the following, much more complete matrix:
 
 * Toolchain:
 	- Visual Studio 2010 (LLVM 3.4.2 only)
-	- Visual Studio 2013
-	- Visual Studio 2015
+	- Visual Studio 2013 (LLVM 3.4.2 to 3.9.1)
+	- Visual Studio 2015 (LLVM 3.4.2 to 3.9.1)
+	- Visual Studio 2017 (LLVM 3.4.2 to 8.0.0)
 
 * Configuration:
 	- Debug
@@ -25,18 +39,9 @@ Unfortunately, pre-built packages on the official `LLVM download page <http://re
 	- AMD64 (a.k.a. x86_64)
 
 * C/C++ Runtime:
-	- libcmt (static)
-	- msvcrt (dynamic)
+	- LIBCMT (static)
+	- MSVCRT (dynamic)
 
-The resulting LLVM binary packages are made publicly available as GitHub release artifacts. Other projects can then download LLVM package archives and unpack LLVM binaries, instead of building LLVM locally.
+The resulting LLVM binary packages are made publicly available as GitHub release artifacts. Compiler developers can now fully test their LLVM-dependent projects on AppVeyor CI simply by downloading and unpacking a corresponding LLVM binary archive during the CI installation phase.
 
-Releases
---------
-
-* `LLVM 3.4.2 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.4.2>`_
-* `LLVM 3.5.2 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.5.2>`_
-* `LLVM 3.6.2 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.6.2>`_
-* `LLVM 3.7.1 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.7.1>`_
-* `LLVM 3.8.1 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.8.1>`_
-* `LLVM 3.9.1 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.9.1>`_
-* `LLVM 4.0.0 <https://github.com/vovkos/llvm-package-windows/releases/llvm-4.0.0>`_
+	Big thanks to the AppVeyor CI team for increasing the allotted build time for ``llvm-package-windows``!
