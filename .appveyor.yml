@@ -95,7 +95,7 @@ deploy:
     provider: GitHub
 
     auth_token:
-        secure: tJE3cSm72rg6tNs4ESK38HU9IAhN7Eh/3kvQZhQKuUelpHT55L/MiPOhOcCdw26u
+        secure: jpZmZjs4rexF7ix1wvN56hvAac2tGVAffQGsygfqMfR34Ls1SkvC1DQaf4On7RTB
 
     artifact: llvm_package
     force_update: true
