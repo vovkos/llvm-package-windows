@@ -129,6 +129,7 @@ set LLVM_DOWNLOAD_URL=http://releases.llvm.org/%LLVM_VERSION%/%LLVM_DOWNLOAD_FIL
 set LLVM_RELEASE_NAME=llvm-%LLVM_VERSION%-windows-%TARGET_CPU%-%TOOLCHAIN%-%CRT%%DEBUG_SUFFIX%
 set LLVM_RELEASE_FILE=%LLVM_RELEASE_NAME%.7z
 set LLVM_RELEASE_DIR=%APPVEYOR_BUILD_FOLDER%\%LLVM_RELEASE_NAME%
+set LLVM_RELEASE_URL=https://github.com/vovkos/llvm-package-travis/releases/%LLVM_RELEASE_TAG%/%LLVM_RELEASE_FILE%
 set LLVM_INSTALL_PREFIX=%LLVM_RELEASE_DIR:\=/%
 
 set LLVM_CMAKE_CONFIGURE_FLAGS= ^
@@ -193,6 +194,7 @@ set CMAKE_BUILD_FLAGS= ^
 echo ---------------------------------------------------------------------------
 echo LLVM_DOWNLOAD_URL:  %LLVM_DOWNLOAD_URL%
 echo LLVM_RELEASE_FILE:  %LLVM_RELEASE_FILE%
+echo LLVM_RELEASE_URL:   %LLVM_RELEASE_URL%
 echo CLANG_DOWNLOAD_URL: %CLANG_DOWNLOAD_URL%
 echo CLANG_RELEASE_FILE: %CLANG_RELEASE_FILE%
 echo ---------------------------------------------------------------------------

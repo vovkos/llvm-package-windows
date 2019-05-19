@@ -17,7 +17,9 @@ configuration:
     - Release
 
 environment:
+    BUILD_PROJECT: clang
     LLVM_VERSION: 3.4.2
+    LLVM_RELEASE_TAG: llvm-3.4.2-a
 
     # 3.4.2 ............ builds on msvc10 and up
     # 3.5.2 ............ skip (a very troublesome release)
@@ -69,22 +71,10 @@ matrix:
 
 install:
     - call set-env.bat %CONFIGURATION% %PLATFORM% %TOOLCHAIN% %CRT%
-    - call install.bat
+    - call install.bat %BUILD_PROJECT%
 
 build_script:
-    - set THIS_DIR=%CD%
-
-    - mkdir llvm\build
-    - cd llvm\build
-    - cmake .. %LLVM_CMAKE_CONFIGURE_FLAGS%
-    - cmake --build . %CMAKE_BUILD_FLAGS%
-    - cmake --build . --target install %CMAKE_BUILD_FLAGS%
-
-    - cd %THIS_DIR%
-
-    - 7z a -t7z %LLVM_RELEASE_FILE% %LLVM_RELEASE_NAME%
-
-    - dir \
+    - call build.bat %BUILD_PROJECT%
 
 artifacts:
     -   path: $(LLVM_RELEASE_FILE)
