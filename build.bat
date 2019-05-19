@@ -30,9 +30,9 @@ goto :eof
 
 :clang
 
-mkdir llvm\build
-cd llvm\build
-cmake .. %LLVM_CMAKE_CONFIGURE_FLAGS%
+mkdir clang\build
+cd clang\build
+cmake .. %CLANG_CMAKE_CONFIGURE_FLAGS%
 cmake --build . %CMAKE_BUILD_FLAGS%
 cmake --build . --target install %CMAKE_BUILD_FLAGS%
 

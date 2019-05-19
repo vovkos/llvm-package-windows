@@ -10,7 +10,10 @@ LLVM packages for Windows
 Releases
 --------
 
-* `LLVM 3.4.2 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.4.2-a>`_
+.. list-table::
+
+	*	- `LLVM 3.4.2 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.4.2-a>`_
+		- `Clang 3.4.2 <https://github.com/vovkos/llvm-package-windows/releases/clang-3.4.2>`_
 
 Abstract
 --------
