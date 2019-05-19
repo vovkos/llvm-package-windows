@@ -12,8 +12,25 @@ Releases
 
 .. list-table::
 
+	*	- LLVM Version
+		- Clang Version
+		- Remarks
+
+	*	- `LLVM 8.0.0 <https://github.com/vovkos/llvm-package-windows/releases/llvm-8.0.0>`_
+		- `Clang 8.0.0 <https://github.com/vovkos/llvm-package-windows/releases/clang-8.0.0>`_
+		- The latest and greatest LLVM
+
+	*	- `LLVM 3.4.2 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.9.1>`_
+		- `Clang 3.4.2 <https://github.com/vovkos/llvm-package-windows/releases/clang-3.9.1>`_
+		- The latest LLVM which still can be compiled with MSVC 2013
+
 	*	- `LLVM 3.4.2 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.4.2-a>`_
 		- `Clang 3.4.2 <https://github.com/vovkos/llvm-package-windows/releases/clang-3.4.2>`_
+		- The latest LLVM which still can be compiled with MSVC 2010
+
+	*	- LLVM x.x.x
+		- Clang x.x.x
+		- Create a :ref:`new issue <https://github.com/vovkos/llvm-package-windows/issues/new>` to request a particular LLVM version
 
 Abstract
 --------
