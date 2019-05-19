@@ -212,3 +212,5 @@ echo CLANG_CMAKE_CONFIGURE_FLAGS: %CLANG_CMAKE_CONFIGURE_FLAGS%
 echo ---------------------------------------------------------------------------
 echo DEPLOY_TAR: %DEPLOY_TAR%
 echo ---------------------------------------------------------------------------
+
+set
