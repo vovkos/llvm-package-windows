@@ -112,7 +112,7 @@ set CLANG_CMAKE_CONFIGURE_EXTRA_FLAGS=-DCLANG_BUILD_TOOLS=OFF
 shift
 goto :loop
 
-:: . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+::..............................................................................
 
 :finalize
 
@@ -129,12 +129,13 @@ set LLVM_DOWNLOAD_URL=http://releases.llvm.org/%LLVM_VERSION%/%LLVM_DOWNLOAD_FIL
 set LLVM_RELEASE_NAME=llvm-%LLVM_VERSION%-windows-%TARGET_CPU%-%TOOLCHAIN%-%CRT%%DEBUG_SUFFIX%
 set LLVM_RELEASE_FILE=%LLVM_RELEASE_NAME%.7z
 set LLVM_RELEASE_DIR=%APPVEYOR_BUILD_FOLDER%\%LLVM_RELEASE_NAME%
-set LLVM_RELEASE_URL=https://github.com/vovkos/llvm-package-windows/releases/download/%LLVM_RELEASE_TAG%/%LLVM_RELEASE_FILE%
+set LLVM_RELEASE_URL=https://github.com/vovkos/llvm-package-windows/releases/download/llvm-%LLVM_VERSION%/%LLVM_RELEASE_FILE%
 set LLVM_INSTALL_PREFIX=%LLVM_RELEASE_DIR:\=/%
 
 set LLVM_CMAKE_CONFIGURE_FLAGS= ^
 	-G "%CMAKE_GENERATOR%%CMAKE_GENERATOR_SUFFIX%" ^
 	-DCMAKE_INSTALL_PREFIX=%LLVM_INSTALL_PREFIX% ^
+	-DCMAKE_DISABLE_FIND_PACKAGE_LibXml2=TRUE ^
 	-DLLVM_USE_CRT_DEBUG=%LLVM_CRT%d ^
 	-DLLVM_USE_CRT_RELEASE=%LLVM_CRT% ^
 	-DLLVM_USE_CRT_MINSIZEREL=%LLVM_CRT% ^
@@ -152,6 +153,8 @@ set LLVM_CMAKE_CONFIGURE_FLAGS= ^
 	-DLLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN=ON ^
 	%LLVM_CMAKE_CONFIGURE_EXTRA_FLAGS%
 
+:: . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
 set CLANG_DOWNLOAD_FILE=cfe-%LLVM_VERSION%.src%TAR_SUFFIX%
 set CLANG_DOWNLOAD_URL=http://releases.llvm.org/%LLVM_VERSION%/%CLANG_DOWNLOAD_FILE%
 set CLANG_RELEASE_NAME=clang-%LLVM_VERSION%-windows-%TARGET_CPU%-%TOOLCHAIN%-%CRT%%DEBUG_SUFFIX%
@@ -162,12 +165,15 @@ set CLANG_INSTALL_PREFIX=%CLANG_RELEASE_DIR:\=/%
 set CLANG_CMAKE_CONFIGURE_FLAGS= ^
 	-G "%CMAKE_GENERATOR%%CMAKE_GENERATOR_SUFFIX%" ^
 	-DCMAKE_INSTALL_PREFIX=%CLANG_INSTALL_PREFIX% ^
+	-DCMAKE_DISABLE_FIND_PACKAGE_LibXml2=TRUE ^
 	-DLLVM_DIR=%LLVM_INSTALL_PREFIX%/lib/cmake/llvm ^
 	-DLLVM_INCLUDE_TESTS=OFF
 	-DLLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN=ON ^
 	-DCLANG_INCLUDE_DOCS=OFF ^
 	-DCLANG_INCLUDE_TESTS=OFF ^
 	%CLANG_CMAKE_CONFIGURE_EXTRA_FLAGS%
+
+:: . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
 if "%LLVM_VERSION%" lss "3.5.0" (
 	set CLANG_CMAKE_CONFIGURE_FLAGS= ^
@@ -191,10 +197,18 @@ set CMAKE_BUILD_FLAGS= ^
 	/verbosity:minimal ^
 	/consoleloggerparameters:Summary
 
+if /i "%BUILD_PROJECT%" == "llvm" set DEPLOY_FILE=%LLVM_RELEASE_FILE%
+if /i "%BUILD_PROJECT%" == "clang" set DEPLOY_FILE=%CLANG_RELEASE_FILE%
+
 echo ---------------------------------------------------------------------------
-echo LLVM_DOWNLOAD_URL:  %LLVM_DOWNLOAD_URL%
-echo LLVM_RELEASE_FILE:  %LLVM_RELEASE_FILE%
-echo LLVM_RELEASE_URL:   %LLVM_RELEASE_URL%
+echo LLVM_DOWNLOAD_URL: %LLVM_DOWNLOAD_URL%
+echo LLVM_RELEASE_FILE: %LLVM_RELEASE_FILE%
+echo LLVM_RELEASE_URL:  %LLVM_RELEASE_URL%
+echo LLVM_CMAKE_CONFIGURE_FLAGS: %LLVM_CMAKE_CONFIGURE_FLAGS%
+echo ---------------------------------------------------------------------------
 echo CLANG_DOWNLOAD_URL: %CLANG_DOWNLOAD_URL%
 echo CLANG_RELEASE_FILE: %CLANG_RELEASE_FILE%
+echo CLANG_CMAKE_CONFIGURE_FLAGS: %CLANG_CMAKE_CONFIGURE_FLAGS%
+echo ---------------------------------------------------------------------------
+echo DEPLOY_TAR: %DEPLOY_TAR%
 echo ---------------------------------------------------------------------------

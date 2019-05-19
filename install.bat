@@ -36,8 +36,10 @@ for %%f in (%DEL_FILE_LIST%) do (
 	)
 )
 
-if /i "%1" == "llvm" goto :llvm
-if /i "%1" == "clang" goto :clang
+::..............................................................................
+
+if /i "%BUILD_PROJECT%" == "llvm" goto :llvm
+if /i "%BUILD_PROJECT%" == "clang" goto :clang
 
 echo Invalid argument: '%1'
 exit -1
