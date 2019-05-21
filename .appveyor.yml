@@ -20,7 +20,7 @@ environment:
     BUILD_PROJECT: clang
     LLVM_VERSION: 3.4.2
 
-    # 3.4.2 ............ builds on msvc10 and up
+    # 3.4.2 ............ builds on msvc10 and up (clang-3.4.2 doesn't build on msvc14 and up)
     # 3.5.2 ............ skip (a very troublesome release)
     # 3.6.0 to 3.9.1 ... build on msvc12 and up
     # 4.0.1 to 7.1.0 ... build on msvc14 and up
@@ -39,17 +39,17 @@ environment:
         -   TOOLCHAIN: msvc12
             CRT: libcmt
 
-        -   TOOLCHAIN: msvc14
-            CRT: msvcrt
-
-        -   TOOLCHAIN: msvc14
-            CRT: libcmt
-
-        -   TOOLCHAIN: msvc15
-            CRT: msvcrt
-
-        -   TOOLCHAIN: msvc15
-            CRT: libcmt
+#        -   TOOLCHAIN: msvc14
+#            CRT: msvcrt
+#
+#        -   TOOLCHAIN: msvc14
+#            CRT: libcmt
+#
+#        -   TOOLCHAIN: msvc15
+#            CRT: msvcrt
+#
+#        -   TOOLCHAIN: msvc15
+#            CRT: libcmt
 
 matrix:
     fast_finish: false
