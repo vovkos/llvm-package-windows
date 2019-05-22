@@ -17,7 +17,7 @@ configuration:
     - Release
 
 environment:
-    BUILD_PROJECT: clang
+    BUILD_PROJECT: llvm
     LLVM_VERSION: 3.9.1
 
     # 3.4.2 ............ builds on msvc10 and up (clang-3.4.2 doesn't build on msvc14 and up)
