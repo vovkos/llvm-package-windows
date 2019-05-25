@@ -40,9 +40,9 @@ Releases
 Abstract
 --------
 
-LLVM is huge, and it's getting bigger with each and every release. Building it together with a project which depends on it (e.g. an LLVM-targeting programming language) during a CI build is **not an option** -- building *LLVM itself* eats most (earlier LLVM releases) and all (recent LLVM releases) of the allotted CI build time.
+LLVM is huge, and it's getting bigger with each and every release. Building it together with a project which depends on it (e.g., an LLVM-targeting programming language) during a CI build is **not an option** -- building *LLVM itself* eats most (earlier LLVM releases), and all (recent LLVM releases) of the allotted CI build time.
 
-So why not using pre-built packages from the official `LLVM download page <http://releases.llvm.org>`__? Unfortunately, the official binaries cover just a *tiny fraction* of possible build configurations on Microsoft Windows. There are no Debug libraries, no builds for the static LIBCMT, and only a single toolchain per LLVM release.
+So why not use pre-built packages from the official `LLVM download page <http://releases.llvm.org>`__? Unfortunately, the official binaries cover just a *tiny fraction* of possible build configurations on Microsoft Windows. There are no Debug libraries, no builds for the static LIBCMT, and only a single toolchain per LLVM release.
 
 The ``llvm-package-travis`` project builds all major versions of LLVM on AppVeyor CI for the following, much more complete matrix:
 
