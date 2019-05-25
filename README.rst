@@ -22,6 +22,11 @@ Releases
 		- `Clang 8.0.0 <https://github.com/vovkos/llvm-package-windows/releases/clang-8.0.0>`_
 		- The latest and greatest LLVM
 
+	*	- 2019-Apr-17
+		- `LLVM 7.1.0 <https://github.com/vovkos/llvm-package-windows/releases/llvm-7.1.0>`_
+		- `Clang 7.1.0 <https://github.com/vovkos/llvm-package-windows/releases/clang-7.1.0>`_
+		- The ABI compatibility with GCC fix for LLVM 7
+
 	*	- 2016-Dec-23
 		- `LLVM 3.9.1 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.9.1>`_
 		- `Clang 3.9.1 <https://github.com/vovkos/llvm-package-windows/releases/clang-3.9.1>`_
