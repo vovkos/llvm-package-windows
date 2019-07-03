@@ -12,7 +12,7 @@ my %llvm_version =
 
 while (my $s = <$file>)
 {
-	if ($s =~ m/set\s*\(\s*LLVM_VERSION_(MAJOR|MINOR|PATCH)\s+([^\s]+)\s*\)/)
+	if ($s =~ m/set\s*\(\s*LLVM_VERSION_(MAJOR|MINOR|PATCH)\s+([0-9.]+)\s*\)/)
 	{
 		$llvm_version{$1} = $2;
 	}
