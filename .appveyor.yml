@@ -39,12 +39,12 @@ environment:
 #
 #        -   TOOLCHAIN: msvc12
 #            CRT: libcmt
-
-        -   TOOLCHAIN: msvc14
-            CRT: msvcrt
-
-        -   TOOLCHAIN: msvc14
-            CRT: libcmt
+#
+#        -   TOOLCHAIN: msvc14
+#            CRT: msvcrt
+#
+#        -   TOOLCHAIN: msvc14
+#            CRT: libcmt
 
         -   TOOLCHAIN: msvc15
             CRT: msvcrt
