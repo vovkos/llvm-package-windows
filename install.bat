@@ -50,10 +50,14 @@ exit -1
 
 :: download LLVM sources
 
-appveyor DownloadFile %LLVM_DOWNLOAD_URL% -FileName %APPVEYOR_BUILD_FOLDER%\%LLVM_DOWNLOAD_FILE%
-7z x -y %APPVEYOR_BUILD_FOLDER%\%LLVM_DOWNLOAD_FILE% -o%APPVEYOR_BUILD_FOLDER%
-7z x -y %APPVEYOR_BUILD_FOLDER%\llvm-%LLVM_VERSION%.src.tar -o%APPVEYOR_BUILD_FOLDER%
-ren %APPVEYOR_BUILD_FOLDER%\llvm-%LLVM_VERSION%.src llvm
+if /i "%BUILD_MASTER%" == "true" (
+	git clone --depth=1 %LLVM_MASTER_URL% llvm
+) else (
+	appveyor DownloadFile %LLVM_DOWNLOAD_URL% -FileName %APPVEYOR_BUILD_FOLDER%\%LLVM_DOWNLOAD_FILE%
+	7z x -y %APPVEYOR_BUILD_FOLDER%\%LLVM_DOWNLOAD_FILE% -o%APPVEYOR_BUILD_FOLDER%
+	7z x -y %APPVEYOR_BUILD_FOLDER%\llvm-%LLVM_VERSION%.src.tar -o%APPVEYOR_BUILD_FOLDER%
+	ren %APPVEYOR_BUILD_FOLDER%\llvm-%LLVM_VERSION%.src llvm
+)
 
 if "%CONFIGURATION%" == "Debug" goto dbg
 goto :eof
@@ -79,10 +83,14 @@ goto :eof
 
 :: download Clang sources
 
-appveyor DownloadFile %CLANG_DOWNLOAD_URL% -FileName %APPVEYOR_BUILD_FOLDER%\%CLANG_DOWNLOAD_FILE%
-7z x -y %APPVEYOR_BUILD_FOLDER%\%CLANG_DOWNLOAD_FILE% -o%APPVEYOR_BUILD_FOLDER%
-7z x -y %APPVEYOR_BUILD_FOLDER%\cfe-%LLVM_VERSION%.src.tar -o%APPVEYOR_BUILD_FOLDER%
-ren %APPVEYOR_BUILD_FOLDER%\cfe-%LLVM_VERSION%.src clang
+if /i "%BUILD_MASTER%" == "true" (
+	git clone --depth=1 %CLANG_MASTER_URL% clang
+) else (
+	appveyor DownloadFile %CLANG_DOWNLOAD_URL% -FileName %APPVEYOR_BUILD_FOLDER%\%CLANG_DOWNLOAD_FILE%
+	7z x -y %APPVEYOR_BUILD_FOLDER%\%CLANG_DOWNLOAD_FILE% -o%APPVEYOR_BUILD_FOLDER%
+	7z x -y %APPVEYOR_BUILD_FOLDER%\cfe-%LLVM_VERSION%.src.tar -o%APPVEYOR_BUILD_FOLDER%
+	ren %APPVEYOR_BUILD_FOLDER%\cfe-%LLVM_VERSION%.src clang
+)
 
 :: download and unpack LLVM release package from llvm-package-windows
 

@@ -17,8 +17,9 @@ configuration:
     - Release
 
 environment:
-    BUILD_PROJECT: clang
-    LLVM_VERSION: 7.1.0
+    BUILD_PROJECT: llvm
+    BUILD_MASTER: true
+    LLVM_VERSION: x.x.x
 
     # 3.4.2 ............ builds on msvc10 and up (clang-3.4.2 doesn't build on msvc14 and up)
     # 3.5.2 ............ skip (a very troublesome release)
@@ -32,7 +33,7 @@ environment:
 #
 #        -   TOOLCHAIN: msvc10
 #            CRT: libcmt
-
+#
 #        -   TOOLCHAIN: msvc12
 #            CRT: msvcrt
 #

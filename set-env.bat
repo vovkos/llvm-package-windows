@@ -116,6 +116,13 @@ goto :loop
 
 :finalize
 
+set LLVM_CMAKELISTS_URL=https://raw.githubusercontent.com/llvm-mirror/llvm/master/CMakeLists.txt
+
+if /i "%BUILD_MASTER%" == "true" (
+	appveyor DownloadFile %LLVM_CMAKELISTS_URL%
+	for /f %%i in ('perl print-llvm-version.pl CMakeLists.txt') do set LLVM_VERSION=%%i
+)
+
 if "%TARGET_CPU%" == "" goto :amd64
 if "%TOOLCHAIN%" == "" goto :msvc14
 if "%CRT%" == "" goto :libcmt
@@ -124,6 +131,7 @@ if "%CONFIGURATION%" == "" goto :release
 set TAR_SUFFIX=.tar.gz
 if "%LLVM_VERSION%" geq "3.5.0" set TAR_SUFFIX=.tar.xz
 
+set LLVM_MASTER_URL=https://github.com/llvm-mirror/llvm
 set LLVM_DOWNLOAD_FILE=llvm-%LLVM_VERSION%.src%TAR_SUFFIX%
 set LLVM_DOWNLOAD_URL=http://releases.llvm.org/%LLVM_VERSION%/%LLVM_DOWNLOAD_FILE%
 set LLVM_RELEASE_NAME=llvm-%LLVM_VERSION%-windows-%TARGET_CPU%-%TOOLCHAIN%-%CRT%%DEBUG_SUFFIX%
@@ -155,6 +163,7 @@ set LLVM_CMAKE_CONFIGURE_FLAGS= ^
 
 :: . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
+set CLANG_MASTER_URL=https://github.com/llvm-mirror/clang
 set CLANG_DOWNLOAD_FILE=cfe-%LLVM_VERSION%.src%TAR_SUFFIX%
 set CLANG_DOWNLOAD_URL=http://releases.llvm.org/%LLVM_VERSION%/%CLANG_DOWNLOAD_FILE%
 set CLANG_RELEASE_NAME=clang-%LLVM_VERSION%-windows-%TARGET_CPU%-%TOOLCHAIN%-%CRT%%DEBUG_SUFFIX%
@@ -204,11 +213,14 @@ if /i "%BUILD_PROJECT%" == "llvm" set DEPLOY_FILE=%LLVM_RELEASE_FILE%
 if /i "%BUILD_PROJECT%" == "clang" set DEPLOY_FILE=%CLANG_RELEASE_FILE%
 
 echo ---------------------------------------------------------------------------
+echo LLVM_VERSION:      %LLVM_VERSION%
+echo LLVM_MASTER_URL:   %LLVM_MASTER_URL%
 echo LLVM_DOWNLOAD_URL: %LLVM_DOWNLOAD_URL%
 echo LLVM_RELEASE_FILE: %LLVM_RELEASE_FILE%
 echo LLVM_RELEASE_URL:  %LLVM_RELEASE_URL%
 echo LLVM_CMAKE_CONFIGURE_FLAGS: %LLVM_CMAKE_CONFIGURE_FLAGS%
 echo ---------------------------------------------------------------------------
+echo CLANG_MASTER_URL:   %CLANG_MASTER_URL%
 echo CLANG_DOWNLOAD_URL: %CLANG_DOWNLOAD_URL%
 echo CLANG_RELEASE_FILE: %CLANG_RELEASE_FILE%
 echo CLANG_CMAKE_CONFIGURE_FLAGS: %CLANG_CMAKE_CONFIGURE_FLAGS%
