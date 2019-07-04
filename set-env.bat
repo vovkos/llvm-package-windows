@@ -96,7 +96,7 @@ goto :loop
 :release
 set CONFIGURATION=Release
 set DEBUG_SUFFIX=
-set LLVM_TARGETS=all
+set LLVM_TARGETS=X86;NVPTX;AMDGPU
 set LLVM_CMAKE_CONFIGURE_EXTRA_FLAGS=
 set CLANG_CMAKE_CONFIGURE_EXTRA_FLAGS=
 shift
@@ -209,6 +209,7 @@ set CMAKE_BUILD_FLAGS= ^
 	-- ^
 	/nologo ^
 	/verbosity:minimal ^
+	/maxcpucount ^
 	/consoleloggerparameters:Summary
 
 if /i "%BUILD_PROJECT%" == "llvm" set DEPLOY_FILE=%LLVM_RELEASE_FILE%
