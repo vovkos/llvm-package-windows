@@ -13,7 +13,7 @@ platform:
     - x86
 
 configuration:
-#    - Debug
+    - Debug
     - Release
 
 environment:

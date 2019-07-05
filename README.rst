@@ -17,10 +17,15 @@ Releases
 		- Clang Version
 		- Remarks
 
+	*	- 2019-Jul-05
+		- `LLVM 9.0.0 <https://github.com/vovkos/llvm-package-windows/releases/llvm-master>`_
+		- `Clang 9.0.0 <https://github.com/vovkos/llvm-package-windows/releases/clang-master>`_
+		- The LLVM master branch
+
 	*	- 2019-Mar-20
 		- `LLVM 8.0.0 <https://github.com/vovkos/llvm-package-windows/releases/llvm-8.0.0>`_
 		- `Clang 8.0.0 <https://github.com/vovkos/llvm-package-windows/releases/clang-8.0.0>`_
-		- The latest and greatest LLVM
+		- The latest official LLVM release
 
 	*	- 2019-Apr-17
 		- `LLVM 7.1.0 <https://github.com/vovkos/llvm-package-windows/releases/llvm-7.1.0>`_
