@@ -118,11 +118,13 @@ goto :loop
 
 :finalize
 
+set LLVM_RELEASE_TAG=llvm-%LLVM_VERSION%
 set LLVM_CMAKELISTS_URL=https://raw.githubusercontent.com/llvm-mirror/llvm/master/CMakeLists.txt
 
 if /i "%BUILD_MASTER%" == "true" (
 	appveyor DownloadFile %LLVM_CMAKELISTS_URL%
 	for /f %%i in ('perl print-llvm-version.pl CMakeLists.txt') do set LLVM_VERSION=%%i
+	set LLVM_RELEASE_TAG=llvm-master
 )
 
 if "%TARGET_CPU%" == "" goto :amd64
@@ -140,7 +142,7 @@ set LLVM_RELEASE_NAME=llvm-%LLVM_VERSION%-windows-%TARGET_CPU%-%TOOLCHAIN%-%CRT%
 set LLVM_RELEASE_FILE=%LLVM_RELEASE_NAME%.7z
 set LLVM_RELEASE_DIR=%APPVEYOR_BUILD_FOLDER%\%LLVM_RELEASE_NAME%
 set LLVM_RELEASE_DIR=%LLVM_RELEASE_DIR:\=/%
-set LLVM_RELEASE_URL=https://github.com/vovkos/llvm-package-windows/releases/download/llvm-%LLVM_VERSION%/%LLVM_RELEASE_FILE%
+set LLVM_RELEASE_URL=https://github.com/vovkos/llvm-package-windows/releases/download/%LLVM_RELEASE_TAG%/%LLVM_RELEASE_FILE%
 
 set LLVM_CMAKE_CONFIGURE_FLAGS= ^
 	-G "%CMAKE_GENERATOR%%CMAKE_GENERATOR_SUFFIX%" ^

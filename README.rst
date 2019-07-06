@@ -54,7 +54,7 @@ LLVM is huge, and it's getting bigger with each and every release. Building it t
 
 So why not use pre-built packages from the official `LLVM download page <http://releases.llvm.org>`__? Unfortunately, the official binaries cover just a *tiny fraction* of possible build configurations on Microsoft Windows. There are no Debug libraries, no builds for the static LIBCMT, and only a single toolchain per LLVM release.
 
-The ``llvm-package-travis`` project builds all major versions of LLVM on AppVeyor CI for the following, much more complete matrix:
+The ``llvm-package-windows`` project builds all major versions of LLVM on AppVeyor CI for the following, much more complete matrix:
 
 * Toolchain:
 	- Visual Studio 2010 (LLVM 3.4.2 only)

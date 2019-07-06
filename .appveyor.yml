@@ -17,7 +17,7 @@ configuration:
     - Release
 
 environment:
-    BUILD_PROJECT: llvm
+    BUILD_PROJECT: clang
     BUILD_MASTER: true
     LLVM_VERSION: x.x.x
 
