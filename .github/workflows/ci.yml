@@ -9,8 +9,8 @@ jobs:
         name: Windows Build
         runs-on: windows-2016
         env:
-            BUILD_PROJECT: llvm
-            BUILD_MASTER: true
+            BUILD_PROJECT: clang
+            BUILD_MASTER: false
             LLVM_VERSION: 8.0.1
 
         strategy:
