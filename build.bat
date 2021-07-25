@@ -1,5 +1,8 @@
 @echo off
 
+%WORKING_DRIVE%
+cd %WORKING_DIR%
+
 ::..............................................................................
 
 set THIS_DIR=%CD%
@@ -22,7 +25,7 @@ cmake --build . --target install %CMAKE_BUILD_FLAGS%
 
 cd %THIS_DIR%
 
-7z a -t7z %LLVM_RELEASE_FILE% %LLVM_RELEASE_NAME%
+7z a -t7z %GITHUB_WORKSPACE%\%LLVM_RELEASE_FILE% %LLVM_RELEASE_NAME%
 
 goto :eof
 
@@ -38,7 +41,7 @@ cmake --build . --target install %CMAKE_BUILD_FLAGS%
 
 cd %THIS_DIR%
 
-7z a -t7z %CLANG_RELEASE_FILE% %CLANG_RELEASE_NAME%
+7z a -t7z %GITHUB_WORKSPACE%\%CLANG_RELEASE_FILE% %CLANG_RELEASE_NAME%
 
 goto :eof
 

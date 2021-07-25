@@ -1,0 +1,56 @@
+name: GitHub CI
+
+on:
+-   push
+-   pull_request
+
+jobs:
+    windowsBuild:
+        name: Windows Build
+        runs-on: windows-2016
+        env:
+            BUILD_PROJECT: llvm
+            BUILD_MASTER: false
+            LLVM_VERSION: 12.0.1
+
+        strategy:
+            fail-fast: false
+            matrix:
+                CRT:
+                -   msvcrt
+                -   libcmt
+
+                TARGET_CPU:
+                -   x86
+                -   amd64
+
+                CONFIGURATION:
+                -   Debug
+                -   Release
+
+        steps:
+        -   name: Checkout repo
+            uses: actions/checkout@v2
+
+        -   name: Install
+            shell: cmd
+            run: |
+                call %GITHUB_WORKSPACE%\set-env.bat msvc15 ${{matrix.CRT}} ${{matrix.TARGET_CPU}} ${{matrix.CONFIGURATION}}
+                call %GITHUB_WORKSPACE%\install.bat
+
+        -   name: Build and test
+            id: BUILD
+            shell: cmd
+            run: |
+                call %GITHUB_WORKSPACE%\set-env.bat msvc15 ${{matrix.CRT}} ${{matrix.TARGET_CPU}} ${{matrix.CONFIGURATION}}
+                call %GITHUB_WORKSPACE%\build.bat
+                echo ::set-output name=DEPLOY_FILE::%DEPLOY_FILE%
+
+        -   name: Release
+            uses: softprops/action-gh-release@v1
+            if: startsWith(github.ref, 'refs/tags/')
+            env:
+                GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+            with:
+                draft: true
+                files: ${{steps.BUILD.outputs.DEPLOY_FILE}}

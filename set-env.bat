@@ -118,11 +118,14 @@ goto :loop
 
 :finalize
 
+set WORKING_DRIVE=%HOMEDRIVE%
+set WORKING_DIR=%HOMEDRIVE%%HOMEPATH%
+
 set LLVM_RELEASE_TAG=llvm-%LLVM_VERSION%
-set LLVM_CMAKELISTS_URL=https://raw.githubusercontent.com/llvm-mirror/llvm/master/CMakeLists.txt
+set LLVM_CMAKELISTS_URL=https://raw.githubusercontent.com/llvm/llvm-project/main/llvm/CMakeLists.txt
 
 if /i "%BUILD_MASTER%" == "true" (
-	appveyor DownloadFile %LLVM_CMAKELISTS_URL%
+	powershell "Invoke-WebRequest -Uri %LLVM_CMAKELISTS_URL% -OutFile CMakeLists.txt"
 	for /f %%i in ('perl print-llvm-version.pl CMakeLists.txt') do set LLVM_VERSION=%%i
 	set LLVM_RELEASE_TAG=llvm-master
 )
@@ -132,18 +135,26 @@ if "%TOOLCHAIN%" == "" goto :msvc14
 if "%CRT%" == "" goto :libcmt
 if "%CONFIGURATION%" == "" goto :release
 
-set TAR_SUFFIX=.tar.gz
-if "%LLVM_VERSION%" geq "3.5.0" set TAR_SUFFIX=.tar.xz
+set TAR_SUFFIX=.tar.xz
+perl compare-versions.pl %LLVM_VERSION% 3.5.0
+if %errorlevel% == -1 set TAR_SUFFIX=.tar.gz
 
-set BASE_DOWNLOAD_URL=http://releases.llvm.org/%LLVM_VERSION%
-if "%LLVM_VERSION%" geq "9.0.1" set BASE_DOWNLOAD_URL=https://github.com/llvm/llvm-project/releases/download/llvmorg-%LLVM_VERSION%
+set BASE_DOWNLOAD_URL=https://github.com/llvm/llvm-project/releases/download/llvmorg-%LLVM_VERSION%
+set BASE_DOWNLOAD_URL_LEGACY=http://releases.llvm.org/%LLVM_VERSION%
+perl compare-versions.pl %LLVM_VERSION% 7.1.0
+if %errorlevel% == -1 set BASE_DOWNLOAD_URL=%BASE_DOWNLOAD_URL_LEGACY%
 
-set LLVM_MASTER_URL=https://github.com/llvm-mirror/llvm
+:: exceptions: 8.0.0, 9.0.0 are still hosted on llvm.org
+
+if %LLVM_VERSION% == 8.0.0 set BASE_DOWNLOAD_URL=%BASE_DOWNLOAD_URL_LEGACY%
+if %LLVM_VERSION% == 9.0.0 set BASE_DOWNLOAD_URL=%BASE_DOWNLOAD_URL_LEGACY%
+
+set LLVM_MASTER_URL=https://github.com/llvm/llvm-project
 set LLVM_DOWNLOAD_FILE=llvm-%LLVM_VERSION%.src%TAR_SUFFIX%
 set LLVM_DOWNLOAD_URL=%BASE_DOWNLOAD_URL%/%LLVM_DOWNLOAD_FILE%
 set LLVM_RELEASE_NAME=llvm-%LLVM_VERSION%-windows-%TARGET_CPU%-%TOOLCHAIN%-%CRT%%DEBUG_SUFFIX%
 set LLVM_RELEASE_FILE=%LLVM_RELEASE_NAME%.7z
-set LLVM_RELEASE_DIR=%APPVEYOR_BUILD_FOLDER%\%LLVM_RELEASE_NAME%
+set LLVM_RELEASE_DIR=%WORKING_DIR%\%LLVM_RELEASE_NAME%
 set LLVM_RELEASE_DIR=%LLVM_RELEASE_DIR:\=/%
 set LLVM_RELEASE_URL=https://github.com/vovkos/llvm-package-windows/releases/download/%LLVM_RELEASE_TAG%/%LLVM_RELEASE_FILE%
 
@@ -176,7 +187,7 @@ set CLANG_DOWNLOAD_FILE=cfe-%LLVM_VERSION%.src%TAR_SUFFIX%
 set CLANG_DOWNLOAD_URL=%BASE_DOWNLOAD_URL%/%CLANG_DOWNLOAD_FILE%
 set CLANG_RELEASE_NAME=clang-%LLVM_VERSION%-windows-%TARGET_CPU%-%TOOLCHAIN%-%CRT%%DEBUG_SUFFIX%
 set CLANG_RELEASE_FILE=%CLANG_RELEASE_NAME%.7z
-set CLANG_RELEASE_DIR=%APPVEYOR_BUILD_FOLDER%\%CLANG_RELEASE_NAME%
+set CLANG_RELEASE_DIR=%WORKING_DIR%\%CLANG_RELEASE_NAME%
 set CLANG_RELEASE_DIR=%CLANG_RELEASE_DIR:\=/%
 
 set CLANG_CMAKE_CONFIGURE_FLAGS= ^
@@ -229,10 +240,9 @@ echo LLVM_RELEASE_FILE: %LLVM_RELEASE_FILE%
 echo LLVM_RELEASE_URL:  %LLVM_RELEASE_URL%
 echo LLVM_CMAKE_CONFIGURE_FLAGS: %LLVM_CMAKE_CONFIGURE_FLAGS%
 echo ---------------------------------------------------------------------------
-echo CLANG_MASTER_URL:   %CLANG_MASTER_URL%
 echo CLANG_DOWNLOAD_URL: %CLANG_DOWNLOAD_URL%
 echo CLANG_RELEASE_FILE: %CLANG_RELEASE_FILE%
 echo CLANG_CMAKE_CONFIGURE_FLAGS: %CLANG_CMAKE_CONFIGURE_FLAGS%
 echo ---------------------------------------------------------------------------
-echo DEPLOY_TAR: %DEPLOY_TAR%
+echo DEPLOY_FILE: %DEPLOY_FILE%
 echo ---------------------------------------------------------------------------
