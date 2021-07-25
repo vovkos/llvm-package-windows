@@ -10,7 +10,7 @@ jobs:
         runs-on: windows-2016
         env:
             BUILD_PROJECT: llvm
-            BUILD_MASTER: false
+            BUILD_MASTER: true
             LLVM_VERSION: 8.0.1
 
         strategy:
@@ -52,5 +52,4 @@ jobs:
             env:
                 GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
             with:
-                draft: true
                 files: ${{steps.BUILD.outputs.DEPLOY_FILE}}
