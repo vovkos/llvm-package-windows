@@ -30,14 +30,17 @@ Releases
 	*	- 2021-Feb-25
 		- `LLVM 11.1.0 <https://github.com/vovkos/llvm-package-windows/releases/llvm-11.1.0>`_
 		- `Clang 11.1.0 <https://github.com/vovkos/llvm-package-windows/releases/clang-11.1.0>`_
+		-
 
 	*	- 2020-Aug-06
 		- `LLVM 10.0.1 <https://github.com/vovkos/llvm-package-windows/releases/llvm-10.0.1>`_
 		- `Clang 10.0.1 <https://github.com/vovkos/llvm-package-windows/releases/clang-10.0.1>`_
+		-
 
 	*	- 2019-Dec-20
 		- `LLVM 9.0.1 <https://github.com/vovkos/llvm-package-windows/releases/llvm-9.0.1>`_
 		- `Clang 9.0.1 <https://github.com/vovkos/llvm-package-windows/releases/clang-9.0.1>`_
+		-
 
 	*	- 2019-Jul-19
 		- `LLVM 8.0.1 <https://github.com/vovkos/llvm-package-windows/releases/llvm-8.0.1>`_
