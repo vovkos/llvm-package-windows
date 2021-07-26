@@ -60,6 +60,22 @@ if /i "%BUILD_MASTER%" == "true" (
 	ren %WORKING_DIR%\%CLANG_DOWNLOAD_FILE_PREFIX%%LLVM_VERSION%.src clang
 )
 
+perl compare-versions.pl %LLVM_VERSION% 11
+if errorlevel == -1 goto nopatch
+perl compare-versions.pl %LLVM_VERSION% 12
+if not errorlevel == -1 goto nopatch
+
+:: clang-11 requires /bigobj (fixed in clang-12)
+
+set PATCH_TARGET=clang\lib\ARCMigrate\CMakeLists.txt
+
+echo. >> %PATCH_TARGET%
+echo if (MSVC) >> %PATCH_TARGET%
+echo   set_source_files_properties(Transforms.cpp PROPERTIES COMPILE_FLAGS /bigobj) >> %PATCH_TARGET%
+echo endif() >> %PATCH_TARGET%
+
+:nopatch
+
 :: download and unpack LLVM release package from llvm-package-windows
 
 powershell "Invoke-WebRequest -Uri %LLVM_RELEASE_URL% -OutFile %WORKING_DIR%\%LLVM_RELEASE_FILE%"
