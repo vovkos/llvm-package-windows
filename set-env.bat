@@ -151,7 +151,7 @@ if %LLVM_VERSION% == 9.0.0 set BASE_DOWNLOAD_URL=%BASE_DOWNLOAD_URL_LEGACY%
 
 set CLANG_DOWNLOAD_FILE_PREFIX=clang-
 perl compare-versions.pl %LLVM_VERSION% 9.0.0
-if %errorlevel% == -1 set BASE_DOWNLOAD_URL=cfe-
+if %errorlevel% == -1 set CLANG_DOWNLOAD_FILE_PREFIX=cfe-
 
 set LLVM_MASTER_URL=https://github.com/llvm/llvm-project
 set LLVM_DOWNLOAD_FILE=llvm-%LLVM_VERSION%.src%TAR_SUFFIX%
@@ -210,20 +210,20 @@ set CLANG_CMAKE_CONFIGURE_FLAGS= ^
 
 :: . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
-if "%LLVM_VERSION%" lss "3.5.0" (
-	set CLANG_CMAKE_CONFIGURE_FLAGS= ^
-		%CLANG_CMAKE_CONFIGURE_FLAGS% ^
-		-DCLANG_PATH_TO_LLVM_BUILD=%LLVM_RELEASE_DIR% ^
-		-DLLVM_MAIN_SRC_DIR=%LLVM_RELEASE_DIR%
-) else if "%LLVM_VERSION%" lss "8.0.0" (
-	set CLANG_CMAKE_CONFIGURE_FLAGS= ^
-		%CLANG_CMAKE_CONFIGURE_FLAGS% ^
-		-DLLVM_CONFIG=%LLVM_RELEASE_DIR%/bin/llvm-config
-) else (
-	set CLANG_CMAKE_CONFIGURE_FLAGS= ^
-		%CLANG_CMAKE_CONFIGURE_FLAGS% ^
-		-DLLVM_DIR=%LLVM_RELEASE_DIR%/lib/cmake/llvm
-)
+set CLANG_CMAKE_CONFIGURE_FLAGS= ^
+	%CLANG_CMAKE_CONFIGURE_FLAGS% ^
+	-DLLVM_DIR=%LLVM_RELEASE_DIR%/lib/cmake/llvm
+
+perl compare-versions.pl %LLVM_VERSION% 8.0.0
+if %errorlevel% == -1 set CLANG_CMAKE_CONFIGURE_FLAGS= ^
+	%CLANG_CMAKE_CONFIGURE_FLAGS% ^
+	-DCLANG_PATH_TO_LLVM_BUILD=%LLVM_RELEASE_DIR% ^
+	-DLLVM_MAIN_SRC_DIR=%LLVM_RELEASE_DIR%
+
+perl compare-versions.pl %LLVM_VERSION% 3.5.0
+if %errorlevel% == -1 set CLANG_CMAKE_CONFIGURE_FLAGS= ^
+	%CLANG_CMAKE_CONFIGURE_FLAGS% ^
+	-DLLVM_CONFIG=%LLVM_RELEASE_DIR%/bin/llvm-config
 
 set CMAKE_BUILD_FLAGS= ^
 	--config %CONFIGURATION% ^

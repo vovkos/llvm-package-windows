@@ -56,8 +56,8 @@ if /i "%BUILD_MASTER%" == "true" (
 ) else (
 	powershell "Invoke-WebRequest -Uri %CLANG_DOWNLOAD_URL% -OutFile %WORKING_DIR%\%CLANG_DOWNLOAD_FILE%"
 	7z x -y %WORKING_DIR%\%CLANG_DOWNLOAD_FILE% -o%WORKING_DIR%
-	7z x -y %WORKING_DIR%\cfe-%LLVM_VERSION%.src.tar -o%WORKING_DIR%
-	ren %WORKING_DIR%\cfe-%LLVM_VERSION%.src clang
+	7z x -y %WORKING_DIR%\%CLANG_DOWNLOAD_FILE_PREFIX%%LLVM_VERSION%.src.tar -o%WORKING_DIR%
+	ren %WORKING_DIR%\%CLANG_DOWNLOAD_FILE_PREFIX%%LLVM_VERSION%.src clang
 )
 
 :: download and unpack LLVM release package from llvm-package-windows
