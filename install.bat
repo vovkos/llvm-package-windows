@@ -60,8 +60,6 @@ if /i "%BUILD_MASTER%" == "true" (
 	ren %WORKING_DIR%\%CLANG_DOWNLOAD_FILE_PREFIX%%LLVM_VERSION%.src clang
 )
 
-set PATCH_TARGET=%WORKING_DIR%\clang\lib\ARCMigrate\CMakeLists.txt
-
 perl compare-versions.pl %LLVM_VERSION% 11
 if %errorlevel% == -1 goto nobigobj
 
@@ -70,6 +68,7 @@ if not %errorlevel% == -1 goto nobigobj
 
 :: clang-11 requires /bigobj (fixed in clang-12)
 
+set PATCH_TARGET=%WORKING_DIR%\clang\lib\ARCMigrate\CMakeLists.txt
 echo Patching %PATCH_TARGET%...
 
 echo. >> %PATCH_TARGET%
