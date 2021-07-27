@@ -10,7 +10,7 @@ jobs:
         runs-on: windows-2016
         env:
             BUILD_PROJECT: clang
-            BUILD_MASTER: true
+            BUILD_MASTER: false
             LLVM_VERSION: 11.1.0
 
         strategy:
