@@ -17,6 +17,11 @@ Releases
 		- Clang Version
 		- Remarks
 
+	*	- 2023-Nov-28
+		- `LLVM 17.0.6 <https://github.com/vovkos/llvm-package-windows/releases/llvm-17.0.6>`_
+		-
+		- The latest official LLVM release
+
 	*	- 2023-Jun-14
 		- `LLVM 16.0.6 <https://github.com/vovkos/llvm-package-windows/releases/llvm-16.0.6>`_
 		-
