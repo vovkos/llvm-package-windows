@@ -24,6 +24,13 @@ if /i "%BUILD_MASTER%" == "true" (
 	7z x -y %WORKING_DIR%\%LLVM_DOWNLOAD_FILE% -o%WORKING_DIR%
 	7z x -y %WORKING_DIR%\llvm-%LLVM_VERSION%.src.tar -o%WORKING_DIR%
 	ren %WORKING_DIR%\llvm-%LLVM_VERSION%.src llvm
+
+	if not "%LLVM_CMAKE_DOWNLOAD_URL%" == "" (
+		powershell "Invoke-WebRequest -Uri %LLVM_CMAKE_DOWNLOAD_URL% -OutFile %WORKING_DIR%\%LLVM_CMAKE_DOWNLOAD_FILE%"
+		7z x -y %WORKING_DIR%\%LLVM_CMAKE_DOWNLOAD_FILE% -o%WORKING_DIR%
+		7z x -y %WORKING_DIR%\cmake-%LLVM_VERSION%.src.tar -o%WORKING_DIR%
+		ren %WORKING_DIR%\cmake-%LLVM_VERSION%.src cmake
+	)
 )
 
 if "%CONFIGURATION%" == "Debug" goto dbg

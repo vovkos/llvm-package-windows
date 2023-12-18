@@ -19,6 +19,8 @@ if /i "%1" == "msvc10" goto :msvc10
 if /i "%1" == "msvc12" goto :msvc12
 if /i "%1" == "msvc14" goto :msvc14
 if /i "%1" == "msvc15" goto :msvc15
+if /i "%1" == "msvc16" goto :msvc16
+if /i "%1" == "msvc17" goto :msvc17
 if /i "%1" == "libcmt" goto :libcmt
 if /i "%1" == "msvcrt" goto :msvcrt
 if /i "%1" == "dbg" goto :dbg
@@ -36,12 +38,14 @@ exit -1
 :x86
 set TARGET_CPU=x86
 set CMAKE_GENERATOR_SUFFIX=
+set CMAKE_ARCH_OPTIONS=-A Win32
 shift
 goto :loop
 
 :amd64
 set TARGET_CPU=amd64
 set CMAKE_GENERATOR_SUFFIX= Win64
+set CMAKE_ARCH_OPTIONS=-A x64
 shift
 goto :loop
 
@@ -73,6 +77,20 @@ set CMAKE_GENERATOR=Visual Studio 15 2017
 shift
 goto :loop
 
+:msvc16
+set TOOLCHAIN=msvc16
+set CMAKE_GENERATOR=Visual Studio 16 2019
+set CMAKE_USE_ARCH_OPTIONS=true
+shift
+goto :loop
+
+:msvc17
+set TOOLCHAIN=msvc17
+set CMAKE_GENERATOR=Visual Studio 17 2022
+set CMAKE_USE_ARCH_OPTIONS=true
+shift
+goto :loop
+
 :: . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
 :: CRT
@@ -80,12 +98,14 @@ goto :loop
 :libcmt
 set CRT=libcmt
 set LLVM_CRT=MT
+set CMAKE_CRT="MultiThreaded$<$<CONFIG:Debug>:Debug>"
 shift
 goto :loop
 
 :msvcrt
 set CRT=msvcrt
 set LLVM_CRT=MD
+set CMAKE_CRT="MultiThreaded$<$<CONFIG:Debug>:Debug>DLL"
 shift
 goto :loop
 
@@ -109,7 +129,7 @@ goto :loop
 set CONFIGURATION=Debug
 set DEBUG_SUFFIX=-dbg
 set LLVM_TARGETS=X86
-set LLVM_CMAKE_CONFIGURE_EXTRA_FLAGS=-DLLVM_BUILD_TOOLS=OFF -DLLVM_OPTIMIZED_TABLEGEN=ON
+set LLVM_CMAKE_CONFIGURE_EXTRA_FLAGS=-DLLVM_BUILD_TOOLS=OFF
 set CLANG_CMAKE_CONFIGURE_EXTRA_FLAGS=-DCLANG_BUILD_TOOLS=OFF
 shift
 goto :loop
@@ -134,6 +154,8 @@ if "%TARGET_CPU%" == "" goto :amd64
 if "%TOOLCHAIN%" == "" goto :msvc14
 if "%CRT%" == "" goto :libcmt
 if "%CONFIGURATION%" == "" goto :release
+if "%CMAKE_USE_ARCH_OPTIONS%" == "" (set CMAKE_GENERATOR=%CMAKE_GENERATOR%%CMAKE_ARCH_SUFFIX%)
+if not "%CMAKE_USE_ARCH_OPTIONS%" == "" (set CMAKE_OPTIONS=%CMAKE_OPTIONS%%CMAKE_ARCH_OPTIONS%)
 
 set TAR_SUFFIX=.tar.xz
 perl compare-versions.pl %LLVM_VERSION% 3.5.0
@@ -156,21 +178,31 @@ if %errorlevel% == -1 set CLANG_DOWNLOAD_FILE_PREFIX=cfe-
 set LLVM_MASTER_URL=https://github.com/llvm/llvm-project
 set LLVM_DOWNLOAD_FILE=llvm-%LLVM_VERSION%.src%TAR_SUFFIX%
 set LLVM_DOWNLOAD_URL=%BASE_DOWNLOAD_URL%/%LLVM_DOWNLOAD_FILE%
+set LLVM_CMAKE_DOWNLOAD_FILE=cmake-%LLVM_VERSION%.src%TAR_SUFFIX%
+set LLVM_CMAKE_DOWNLOAD_URL=%BASE_DOWNLOAD_URL%/%LLVM_CMAKE_DOWNLOAD_FILE%
 set LLVM_RELEASE_NAME=llvm-%LLVM_VERSION%-windows-%TARGET_CPU%-%TOOLCHAIN%-%CRT%%DEBUG_SUFFIX%
 set LLVM_RELEASE_FILE=%LLVM_RELEASE_NAME%.7z
 set LLVM_RELEASE_DIR=%WORKING_DIR%\%LLVM_RELEASE_NAME%
 set LLVM_RELEASE_DIR=%LLVM_RELEASE_DIR:\=/%
 set LLVM_RELEASE_URL=https://github.com/vovkos/llvm-package-windows/releases/download/%LLVM_RELEASE_TAG%/%LLVM_RELEASE_FILE%
 
-set LLVM_CMAKE_CONFIGURE_FLAGS= ^
-	-G "%CMAKE_GENERATOR%%CMAKE_GENERATOR_SUFFIX%" ^
-	-Thost=x64 ^
-	-DCMAKE_INSTALL_PREFIX=%LLVM_RELEASE_DIR% ^
-	-DCMAKE_DISABLE_FIND_PACKAGE_LibXml2=TRUE ^
+perl compare-versions.pl %LLVM_VERSION% 15.0.0
+if %errorlevel% == -1 set LLVM_CMAKE_DOWNLOAD_URL=
+
+set LLVM_CMAKE_CRT_FLAGS= -DCMAKE_MSVC_RUNTIME_LIBRARY=%CMAKE_CRT%
+
+perl compare-versions.pl %LLVM_VERSION% 17.0.0
+if %errorlevel% == -1 set LLVM_CMAKE_CRT_FLAGS= ^
 	-DLLVM_USE_CRT_DEBUG=%LLVM_CRT%d ^
 	-DLLVM_USE_CRT_RELEASE=%LLVM_CRT% ^
 	-DLLVM_USE_CRT_MINSIZEREL=%LLVM_CRT% ^
-	-DLLVM_USE_CRT_RELWITHDEBINFO=%LLVM_CRT% ^
+	-DLLVM_USE_CRT_RELWITHDEBINFO=%LLVM_CRT%
+
+set LLVM_CMAKE_CONFIGURE_FLAGS= ^
+	-G "%CMAKE_GENERATOR%" ^
+	-Thost=x64 ^
+	-DCMAKE_INSTALL_PREFIX=%LLVM_RELEASE_DIR% ^
+	-DCMAKE_DISABLE_FIND_PACKAGE_LibXml2=TRUE ^
 	-DLLVM_TARGETS_TO_BUILD=%LLVM_TARGETS% ^
 	-DLLVM_ENABLE_TERMINFO=OFF ^
 	-DLLVM_ENABLE_ZLIB=OFF ^
@@ -182,6 +214,7 @@ set LLVM_CMAKE_CONFIGURE_FLAGS= ^
 	-DLLVM_INCLUDE_TESTS=OFF ^
 	-DLLVM_INCLUDE_UTILS=OFF ^
 	-DLLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN=ON ^
+	%LLVM_CMAKE_CRT_FLAGS% ^
 	%LLVM_CMAKE_CONFIGURE_EXTRA_FLAGS%
 
 :: . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -195,17 +228,14 @@ set CLANG_RELEASE_DIR=%WORKING_DIR%\%CLANG_RELEASE_NAME%
 set CLANG_RELEASE_DIR=%CLANG_RELEASE_DIR:\=/%
 
 set CLANG_CMAKE_CONFIGURE_FLAGS= ^
-	-G "%CMAKE_GENERATOR%%CMAKE_GENERATOR_SUFFIX%" ^
+	-G "%CMAKE_GENERATOR%" ^
 	-DCMAKE_INSTALL_PREFIX=%CLANG_RELEASE_DIR% ^
 	-DCMAKE_DISABLE_FIND_PACKAGE_LibXml2=TRUE ^
-	-DLLVM_USE_CRT_DEBUG=%LLVM_CRT%d ^
-	-DLLVM_USE_CRT_RELEASE=%LLVM_CRT% ^
-	-DLLVM_USE_CRT_MINSIZEREL=%LLVM_CRT% ^
-	-DLLVM_USE_CRT_RELWITHDEBINFO=%LLVM_CRT% ^
 	-DLLVM_INCLUDE_TESTS=OFF ^
 	-DLLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN=ON ^
 	-DCLANG_INCLUDE_DOCS=OFF ^
 	-DCLANG_INCLUDE_TESTS=OFF ^
+	%LLVM_CMAKE_CRT_FLAGS% ^
 	%CLANG_CMAKE_CONFIGURE_EXTRA_FLAGS%
 
 :: . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -237,15 +267,16 @@ if /i "%BUILD_PROJECT%" == "llvm" set DEPLOY_FILE=%LLVM_RELEASE_FILE%
 if /i "%BUILD_PROJECT%" == "clang" set DEPLOY_FILE=%CLANG_RELEASE_FILE%
 
 echo ---------------------------------------------------------------------------
-echo LLVM_VERSION:      %LLVM_VERSION%
-echo LLVM_MASTER_URL:   %LLVM_MASTER_URL%
-echo LLVM_DOWNLOAD_URL: %LLVM_DOWNLOAD_URL%
-echo LLVM_RELEASE_FILE: %LLVM_RELEASE_FILE%
-echo LLVM_RELEASE_URL:  %LLVM_RELEASE_URL%
-echo LLVM_CMAKE_CONFIGURE_FLAGS: %LLVM_CMAKE_CONFIGURE_FLAGS%
+echo LLVM_VERSION:                %LLVM_VERSION%
+echo LLVM_MASTER_URL:             %LLVM_MASTER_URL%
+echo LLVM_DOWNLOAD_URL:           %LLVM_DOWNLOAD_URL%
+echo LLVM_CMAKE_DOWNLOAD_URL:     %LLVM_CMAKE_DOWNLOAD_URL%
+echo LLVM_RELEASE_FILE:           %LLVM_RELEASE_FILE%
+echo LLVM_RELEASE_URL:            %LLVM_RELEASE_URL%
+echo LLVM_CMAKE_CONFIGURE_FLAGS:  %LLVM_CMAKE_CONFIGURE_FLAGS%
 echo ---------------------------------------------------------------------------
-echo CLANG_DOWNLOAD_URL: %CLANG_DOWNLOAD_URL%
-echo CLANG_RELEASE_FILE: %CLANG_RELEASE_FILE%
+echo CLANG_DOWNLOAD_URL:          %CLANG_DOWNLOAD_URL%
+echo CLANG_RELEASE_FILE:          %CLANG_RELEASE_FILE%
 echo CLANG_CMAKE_CONFIGURE_FLAGS: %CLANG_CMAKE_CONFIGURE_FLAGS%
 echo ---------------------------------------------------------------------------
 echo DEPLOY_FILE: %DEPLOY_FILE%

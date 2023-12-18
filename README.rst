@@ -99,4 +99,4 @@ The resulting LLVM binary packages are uploaded as GitHub Release artifacts. Com
 Sample
 ------
 
-* `Jancy <https://github.com/vovkos/jancy>`__ uses ``llvm-package-windows`` for CI testing on a range of configurations and LLVM versions. See `build logs <https://ci.appveyor.com/project/vovkos/jancy>`__ for more details.
+* `Jancy <https://github.com/vovkos/jancy>`__ uses ``llvm-package-windows`` for CI testing on a range of configurations and LLVM versions. See `build logs <https://github.com/vovkos/jancy/actions>`__ for more details.

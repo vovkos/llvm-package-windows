@@ -7,9 +7,9 @@ on:
 jobs:
     windowsBuild:
         name: Windows Build
-        runs-on: windows-2016
+        runs-on: windows-2019
         env:
-            BUILD_PROJECT: clang
+            BUILD_PROJECT: llvm
             BUILD_MASTER: false
             LLVM_VERSION: 11.1.0
 
@@ -30,19 +30,19 @@ jobs:
 
         steps:
         -   name: Checkout repo
-            uses: actions/checkout@v2
+            uses: actions/checkout@v3
 
         -   name: Install
             shell: cmd
             run: |
-                call %GITHUB_WORKSPACE%\set-env.bat msvc15 ${{matrix.CRT}} ${{matrix.TARGET_CPU}} ${{matrix.CONFIGURATION}}
+                call %GITHUB_WORKSPACE%\set-env.bat msvc16 ${{matrix.CRT}} ${{matrix.TARGET_CPU}} ${{matrix.CONFIGURATION}}
                 call %GITHUB_WORKSPACE%\install.bat
 
         -   name: Build and test
             id: BUILD
             shell: cmd
             run: |
-                call %GITHUB_WORKSPACE%\set-env.bat msvc15 ${{matrix.CRT}} ${{matrix.TARGET_CPU}} ${{matrix.CONFIGURATION}}
+                call %GITHUB_WORKSPACE%\set-env.bat msvc16 ${{matrix.CRT}} ${{matrix.TARGET_CPU}} ${{matrix.CONFIGURATION}}
                 call %GITHUB_WORKSPACE%\build.bat
                 echo ::set-output name=DEPLOY_FILE::%DEPLOY_FILE%
 
