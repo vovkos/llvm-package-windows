@@ -17,15 +17,20 @@ Releases
 		- Clang Version
 		- Remarks
 
-	*	- 2021-Jul-25
-		- `LLVM 13.0.0 <https://github.com/vovkos/llvm-package-windows/releases/llvm-master>`_
-		- `Clang 13.0.0 <https://github.com/vovkos/llvm-package-windows/releases/clang-master>`_
-		- The LLVM master branch
+	*	- 2022-Jun-25
+		- `LLVM 14.0.6 <https://github.com/vovkos/llvm-package-windows/releases/llvm-14.0.6>`_
+		-
+		-
+
+	*	- 2022-Feb-02
+		- `LLVM 13.0.1 <https://github.com/vovkos/llvm-package-windows/releases/llvm-13.0.1>`_
+		-
+		-
 
 	*	- 2021-Jul-08
 		- `LLVM 12.0.1 <https://github.com/vovkos/llvm-package-windows/releases/llvm-12.0.1>`_
 		- `Clang 12.0.1 <https://github.com/vovkos/llvm-package-windows/releases/clang-12.0.1>`_
-		- The latest official LLVM release
+		-
 
 	*	- 2021-Feb-25
 		- `LLVM 11.1.0 <https://github.com/vovkos/llvm-package-windows/releases/llvm-11.1.0>`_
