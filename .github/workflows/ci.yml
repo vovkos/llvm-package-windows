@@ -7,11 +7,11 @@ on:
 jobs:
     windowsBuild:
         name: Windows Build
-        runs-on: windows-2019
+        runs-on: windows-2022
         env:
             BUILD_PROJECT: clang
             BUILD_MASTER: false
-            LLVM_VERSION: 16.0.6
+            LLVM_VERSION: 17.0.6
 
         strategy:
             fail-fast: false
@@ -35,14 +35,14 @@ jobs:
         -   name: Install
             shell: cmd
             run: |
-                call %GITHUB_WORKSPACE%\set-env.bat msvc16 ${{matrix.CRT}} ${{matrix.TARGET_CPU}} ${{matrix.CONFIGURATION}}
+                call %GITHUB_WORKSPACE%\set-env.bat msvc17 ${{matrix.CRT}} ${{matrix.TARGET_CPU}} ${{matrix.CONFIGURATION}}
                 call %GITHUB_WORKSPACE%\install.bat
 
         -   name: Build and test
             id: BUILD
             shell: cmd
             run: |
-                call %GITHUB_WORKSPACE%\set-env.bat msvc16 ${{matrix.CRT}} ${{matrix.TARGET_CPU}} ${{matrix.CONFIGURATION}}
+                call %GITHUB_WORKSPACE%\set-env.bat msvc17 ${{matrix.CRT}} ${{matrix.TARGET_CPU}} ${{matrix.CONFIGURATION}}
                 call %GITHUB_WORKSPACE%\build.bat
                 echo ::set-output name=DEPLOY_FILE::%DEPLOY_FILE%
 
