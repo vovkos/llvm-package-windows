@@ -34,7 +34,7 @@ Releases
 
 	*	- 2022-06-25
 		- `LLVM 14.0.6 <https://github.com/vovkos/llvm-package-windows/releases/llvm-14.0.6>`_
-		-
+		- `Clang 14.0.6 <https://github.com/vovkos/llvm-package-windows/releases/clang-14.0.6>`_
 		-
 
 	*	- 2022-02-02
@@ -92,7 +92,7 @@ Abstract
 
 LLVM is huge, and it's getting bigger with each and every release. Building it together with a project that depends on it (e.g., a programming language) during a CI build stage is not a good option -- building LLVM alone takes hours!
 
-So why not use pre-built packages from the official `LLVM download page <http://releases.llvm.org>`__? Unfortunately, the official Windows binaries only include the LLVM-C.dll, Clang, and *some* tools -- there are no LLVM headers, C++ libraries, and many essential LLVM tools such as ``lli``.
+So why not use pre-built packages from the official `LLVM download page <http://releases.llvm.org>`__? Unfortunately, the official Windows binaries only include the ``LLVM-C.dll``, Clang, and *some* tools -- there are no LLVM headers, C++ libraries, and many essential LLVM tools such as ``lli``.
 
 The ``llvm-package-windows`` project builds all major versions of the LLVM and Clang libraries on **GitHub Actions** for the following matrix:
 
