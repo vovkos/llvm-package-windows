@@ -19,6 +19,7 @@ exit -1
 if /i "%BUILD_MASTER%" == "true" (
 	git clone --depth=1 %LLVM_MASTER_URL% %WORKING_DIR%\llvm-git
 	move %WORKING_DIR%\llvm-git\llvm %WORKING_DIR%
+	if exist %WORKING_DIR%\llvm-git\cmake move %WORKING_DIR%\llvm-git\cmake %WORKING_DIR%
 ) else (
 	powershell "Invoke-WebRequest -Uri %LLVM_DOWNLOAD_URL% -OutFile %WORKING_DIR%\%LLVM_DOWNLOAD_FILE%"
 	7z x -y %WORKING_DIR%\%LLVM_DOWNLOAD_FILE% -o%WORKING_DIR%
@@ -60,11 +61,19 @@ goto :eof
 if /i "%BUILD_MASTER%" == "true" (
 	git clone --depth=1 %LLVM_MASTER_URL% %WORKING_DIR%\llvm-git
 	move %WORKING_DIR%\llvm-git\clang %WORKING_DIR%
+	if exist %WORKING_DIR%\llvm-git\cmake move %WORKING_DIR%\llvm-git\cmake %WORKING_DIR%
 ) else (
 	powershell "Invoke-WebRequest -Uri %CLANG_DOWNLOAD_URL% -OutFile %WORKING_DIR%\%CLANG_DOWNLOAD_FILE%"
 	7z x -y %WORKING_DIR%\%CLANG_DOWNLOAD_FILE% -o%WORKING_DIR%
 	7z x -y %WORKING_DIR%\%CLANG_DOWNLOAD_FILE_PREFIX%%LLVM_VERSION%.src.tar -o%WORKING_DIR%
 	ren %WORKING_DIR%\%CLANG_DOWNLOAD_FILE_PREFIX%%LLVM_VERSION%.src clang
+
+	if not "%LLVM_CMAKE_DOWNLOAD_URL%" == "" (
+		powershell "Invoke-WebRequest -Uri %LLVM_CMAKE_DOWNLOAD_URL% -OutFile %WORKING_DIR%\%LLVM_CMAKE_DOWNLOAD_FILE%"
+		7z x -y %WORKING_DIR%\%LLVM_CMAKE_DOWNLOAD_FILE% -o%WORKING_DIR%
+		7z x -y %WORKING_DIR%\cmake-%LLVM_VERSION%.src.tar -o%WORKING_DIR%
+		ren %WORKING_DIR%\cmake-%LLVM_VERSION%.src cmake
+	)
 )
 
 perl compare-versions.pl %LLVM_VERSION% 11

@@ -12,75 +12,75 @@ Releases
 
 .. list-table::
 
-	*	- LLVM Date
-		- LLVM Version
-		- Clang Version
+	*	- Date
+		- LLVM
+		- Clang
 		- Remarks
 
-	*	- 2023-Nov-28
+	*	- 2023-11-28
 		- `LLVM 17.0.6 <https://github.com/vovkos/llvm-package-windows/releases/llvm-17.0.6>`_
 		-
 		- The latest official LLVM release
 
-	*	- 2023-Jun-14
+	*	- 2023-06-14
 		- `LLVM 16.0.6 <https://github.com/vovkos/llvm-package-windows/releases/llvm-16.0.6>`_
 		-
 		- The latest LLVM that still can be compiled with MSVC 2019
 
-	*	- 2023-Jan-12
+	*	- 2023-01-12
 		- `LLVM 15.0.7 <https://github.com/vovkos/llvm-package-windows/releases/llvm-15.0.7>`_
 		-
 		- Starting with this release, LLVM requires the external `cmake` folder
 
-	*	- 2022-Jun-25
+	*	- 2022-06-25
 		- `LLVM 14.0.6 <https://github.com/vovkos/llvm-package-windows/releases/llvm-14.0.6>`_
 		-
 		-
 
-	*	- 2022-Feb-02
+	*	- 2022-02-02
 		- `LLVM 13.0.1 <https://github.com/vovkos/llvm-package-windows/releases/llvm-13.0.1>`_
-		-
-		-
+		- `Clang 13.0.1 <https://github.com/vovkos/llvm-package-windows/releases/clang-13.0.1>`_
+		- The latest LLVM that still can be compiled with MSVC 15 2017
 
-	*	- 2021-Jul-08
+	*	- 2021-07-08
 		- `LLVM 12.0.1 <https://github.com/vovkos/llvm-package-windows/releases/llvm-12.0.1>`_
 		- `Clang 12.0.1 <https://github.com/vovkos/llvm-package-windows/releases/clang-12.0.1>`_
 		-
 
-	*	- 2021-Feb-25
+	*	- 2021-02-25
 		- `LLVM 11.1.0 <https://github.com/vovkos/llvm-package-windows/releases/llvm-11.1.0>`_
 		- `Clang 11.1.0 <https://github.com/vovkos/llvm-package-windows/releases/clang-11.1.0>`_
 		-
 
-	*	- 2020-Aug-06
+	*	- 2020-08-06
 		- `LLVM 10.0.1 <https://github.com/vovkos/llvm-package-windows/releases/llvm-10.0.1>`_
 		- `Clang 10.0.1 <https://github.com/vovkos/llvm-package-windows/releases/clang-10.0.1>`_
 		-
 
-	*	- 2019-Dec-20
+	*	- 2019-12-20
 		- `LLVM 9.0.1 <https://github.com/vovkos/llvm-package-windows/releases/llvm-9.0.1>`_
 		- `Clang 9.0.1 <https://github.com/vovkos/llvm-package-windows/releases/clang-9.0.1>`_
 		-
 
-	*	- 2019-Jul-19
+	*	- 2019-07-19
 		- `LLVM 8.0.1 <https://github.com/vovkos/llvm-package-windows/releases/llvm-8.0.1>`_
 		- `Clang 8.0.1 <https://github.com/vovkos/llvm-package-windows/releases/clang-8.0.1>`_
-		- The latest LLVM that still can be compiled with MSVC 2015
+		- The latest LLVM that still can be compiled with MSVC 14 2015
 
-	*	- 2019-May-10
+	*	- 2019-05-10
 		- `LLVM 7.1.0 <https://github.com/vovkos/llvm-package-windows/releases/llvm-7.1.0>`_
 		- `Clang 7.1.0 <https://github.com/vovkos/llvm-package-windows/releases/clang-7.1.0>`_
 		- The ABI compatibility with GCC fix for LLVM 7
 
-	*	- 2016-Dec-23
+	*	- 2016-12-23
 		- `LLVM 3.9.1 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.9.1>`_
 		- `Clang 3.9.1 <https://github.com/vovkos/llvm-package-windows/releases/clang-3.9.1>`_
-		- The latest LLVM that still can be compiled with MSVC 2013
+		- The latest LLVM that still can be compiled with MSVC 12 2013
 
-	*	- 2014-Jun-19
+	*	- 2014-06-19
 		- `LLVM 3.4.2 <https://github.com/vovkos/llvm-package-windows/releases/llvm-3.4.2>`_
 		- `Clang 3.4.2 <https://github.com/vovkos/llvm-package-windows/releases/clang-3.4.2>`_
-		- The latest LLVM that still can be compiled with MSVC 2010
+		- The latest LLVM that still can be compiled with MSVC 10 2010
 
 	*	-
 		- LLVM x.x.x
@@ -90,17 +90,11 @@ Releases
 Abstract
 --------
 
-LLVM is huge, and it's getting bigger with each and every release. Building it together with a project that depends on it (e.g., a programming language) during a CI build is **not an option** -- building *just LLVM* eats most (earlier LLVM releases), and all (recent LLVM releases) of the allotted CI build time.
+LLVM is huge, and it's getting bigger with each and every release. Building it together with a project that depends on it (e.g., a programming language) during a CI build stage is not a good option -- building LLVM alone takes hours!
 
-So why not use pre-built packages from the official `LLVM download page <http://releases.llvm.org>`__? Unfortunately, the official binaries cover just a *tiny fraction* of possible build configurations on Microsoft Windows. There are no Debug libraries, no builds for the static LIBCMT, and only a single toolchain per LLVM release.
+So why not use pre-built packages from the official `LLVM download page <http://releases.llvm.org>`__? Unfortunately, the official Windows binaries only include the LLVM-C.dll, Clang, and *some* tools -- there are no LLVM headers, C++ libraries, and many essential LLVM tools such as ``lli``.
 
-The ``llvm-package-windows`` project builds all major versions of LLVM on **GitHub Actions** for the following, much more complete matrix:
-
-* Toolchain:
-	- Visual Studio 2017
-	- Visual Studio 2015 (LLVM 3.4.2 to 8.0.0)
-	- Visual Studio 2013 (LLVM 3.4.2 to 3.9.1)
-	- Visual Studio 2010 (LLVM 3.4.2 only)
+The ``llvm-package-windows`` project builds all major versions of the LLVM and Clang libraries on **GitHub Actions** for the following matrix:
 
 * Configuration:
 	- Debug
@@ -114,7 +108,7 @@ The ``llvm-package-windows`` project builds all major versions of LLVM on **GitH
 	- LIBCMT (static)
 	- MSVCRT (dynamic)
 
-The resulting LLVM binary packages are uploaded as GitHub Release artifacts. Compiler developers can now thoroughly test their LLVM-dependent projects on GitHub CI or AppVeyor CI simply by downloading and unpacking an archive with the required LLVM prebuilt binaries during the CI installation stage.
+The resulting LLVM binary packages are uploaded as GitHub Release artifacts. Compiler developers can now thoroughly test their LLVM-dependent projects on GitHub CI or AppVeyor CI simply by downloading and unpacking an archive with the required LLVM prebuilt libraries and tools during the CI installation stage.
 
 Sample
 ------
