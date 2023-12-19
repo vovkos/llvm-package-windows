@@ -29,7 +29,7 @@ Releases
 
 	*	- 2023-01-12
 		- `LLVM 15.0.7 <https://github.com/vovkos/llvm-package-windows/releases/llvm-15.0.7>`_
-		-
+		- `Clang 15.0.7 <https://github.com/vovkos/llvm-package-windows/releases/clang-15.0.7>`_
 		- Starting with this release, LLVM requires the external `cmake` folder
 
 	*	- 2022-06-25
