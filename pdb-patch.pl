@@ -19,6 +19,7 @@ my $patch = '
 			FILES ${pdb_dir}/${name}.pdb
 			CONFIGURATIONS Debug
 			DESTINATION lib${LLVM_LIBDIR_SUFFIX}
+			OPTIONAL
 			)
 	endif()
 
