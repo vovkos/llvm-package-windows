@@ -11,7 +11,7 @@ jobs:
         env:
             BUILD_PROJECT: clang
             BUILD_MASTER: false
-            LLVM_VERSION: 16.0.6
+            LLVM_VERSION: 17.0.6
 
         strategy:
             fail-fast: false
