@@ -11,22 +11,22 @@ jobs:
         env:
             BUILD_PROJECT: llvm
             BUILD_MASTER: false
-            LLVM_VERSION: 17.0.6
+            LLVM_VERSION: 13.0.1
 
         strategy:
             fail-fast: false
             matrix:
                 CRT:
                 -   msvcrt
-                # -   libcmt
+                -   libcmt
 
                 TARGET_CPU:
-                # -   x86
+                -   x86
                 -   amd64
 
                 CONFIGURATION:
                 -   Debug
-                # -   Release
+                -   Release
 
         steps:
         -   name: Checkout repo
