@@ -3,9 +3,6 @@ LLVM packages for Windows
 
 .. image:: https://github.com/vovkos/llvm-package-windows/actions/workflows/ci.yml/badge.svg
 	:target: https://github.com/vovkos/llvm-package-windows/actions/workflows/ci.yml
-.. image:: https://img.shields.io/badge/donate-@jancy.org-blue.svg
-	:align: right
-	:target: http://jancy.org/donate.html?donate=llvm-package
 
 Releases
 --------
@@ -17,9 +14,9 @@ Releases
 		- Clang
 		- Remarks
 
-	*	- 2024-05-18
-		- `LLVM 18.1.6 <https://github.com/vovkos/llvm-package-windows/releases/llvm-18.1.6>`_
-		- `Clang 18.1.6 <https://github.com/vovkos/llvm-package-windows/releases/clang-18.1.6>`_
+	*	- 2024-06-19
+		- `LLVM 18.1.8 <https://github.com/vovkos/llvm-package-windows/releases/llvm-18.1.8>`_
+		- `Clang 18.1.8 <https://github.com/vovkos/llvm-package-windows/releases/clang-18.1.8>`_
 		- The latest official LLVM release
 
 	*	- 2023-11-28
