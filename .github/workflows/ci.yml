@@ -11,7 +11,7 @@ jobs:
         env:
             BUILD_PROJECT: llvm
             BUILD_MASTER: false
-            LLVM_VERSION: 18.1.8
+            LLVM_VERSION: 19.1.7
 
         strategy:
             fail-fast: false
