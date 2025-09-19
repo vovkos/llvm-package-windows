@@ -16,17 +16,17 @@ Releases
 
 	*	- 2025-09-10
 		- `LLVM 21.1.1 <https://github.com/vovkos/llvm-package-windows/releases/llvm-21.1.1>`_
-		-
+		- `Clang 21.1.1 <https://github.com/vovkos/llvm-package-windows/releases/clang-21.1.1>`_
 		- The latest official LLVM release
 
 	*	- 2025-07-09
 		- `LLVM 20.1.8 <https://github.com/vovkos/llvm-package-windows/releases/llvm-20.1.8>`_
-		-
+		- `Clang 20.1.8 <https://github.com/vovkos/llvm-package-windows/releases/clang-20.1.8>`_
 		-
 
 	*	- 2025-01-14
 		- `LLVM 19.1.7 <https://github.com/vovkos/llvm-package-windows/releases/llvm-19.1.7>`_
-		-
+		- `Clang 19.1.7 <https://github.com/vovkos/llvm-package-windows/releases/clang-19.1.7>`_
 		-
 
 	*	- 2024-06-19
