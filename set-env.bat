@@ -145,7 +145,7 @@ set LLVM_RELEASE_TAG=llvm-%LLVM_VERSION%
 set LLVM_CMAKELISTS_URL=https://raw.githubusercontent.com/llvm/llvm-project/main/llvm/CMakeLists.txt
 
 if /i "%BUILD_MASTER%" == "true" (
-	powershell "Invoke-WebRequest -Uri %LLVM_CMAKELISTS_URL% -OutFile CMakeLists.txt"
+	curl -fLo CMakeLists.txt %LLVM_CMAKELISTS_URL%
 	for /f %%i in ('perl print-llvm-version.pl CMakeLists.txt') do set LLVM_VERSION=%%i
 	set LLVM_RELEASE_TAG=llvm-master
 )

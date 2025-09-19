@@ -15,14 +15,14 @@ if /i "%BUILD_MASTER%" == "true" (
 ::..............................................................................
 
 if not "%LLVM_CMAKE_DOWNLOAD_URL%" == "" (
-	powershell "Invoke-WebRequest -Uri %LLVM_CMAKE_DOWNLOAD_URL% -OutFile %WORKING_DIR%\%LLVM_CMAKE_DOWNLOAD_FILE%"
+	curl -fLo %WORKING_DIR%\%LLVM_CMAKE_DOWNLOAD_FILE% %LLVM_CMAKE_DOWNLOAD_URL%
 	7z x -y %WORKING_DIR%\%LLVM_CMAKE_DOWNLOAD_FILE% -o%WORKING_DIR%
 	7z x -y %WORKING_DIR%\cmake-%LLVM_VERSION%.src.tar -o%WORKING_DIR%
 	ren %WORKING_DIR%\cmake-%LLVM_VERSION%.src cmake
 )
 
 if not "%LLVM_THIRD_PARTY_DOWNLOAD_URL%" == "" (
-	powershell "Invoke-WebRequest -Uri %LLVM_THIRD_PARTY_DOWNLOAD_URL% -OutFile %WORKING_DIR%\%LLVM_THIRD_PARTY_DOWNLOAD_FILE%"
+	curl -fLo %WORKING_DIR%\%LLVM_THIRD_PARTY_DOWNLOAD_FILE% %LLVM_THIRD_PARTY_DOWNLOAD_URL%
 	7z x -y %WORKING_DIR%\%LLVM_THIRD_PARTY_DOWNLOAD_FILE% -o%WORKING_DIR%
 	7z x -y %WORKING_DIR%\third-party-%LLVM_VERSION%.src.tar -o%WORKING_DIR%
 	ren %WORKING_DIR%\third-party-%LLVM_VERSION%.src third-party
@@ -42,12 +42,13 @@ exit -1
 
 :: download LLVM sources
 
-powershell "Invoke-WebRequest -Uri %LLVM_DOWNLOAD_URL% -OutFile %WORKING_DIR%\%LLVM_DOWNLOAD_FILE%"
+curl -fLo %WORKING_DIR%\%LLVM_DOWNLOAD_FILE% %LLVM_DOWNLOAD_URL%
 7z x -y %WORKING_DIR%\%LLVM_DOWNLOAD_FILE% -o%WORKING_DIR%
 7z x -y %WORKING_DIR%\llvm-%LLVM_VERSION%.src.tar -o%WORKING_DIR%
 ren %WORKING_DIR%\llvm-%LLVM_VERSION%.src llvm
 
 if "%CONFIGURATION%" == "Debug" goto dbg
+
 goto :eof
 
 :: . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -71,7 +72,7 @@ goto :eof
 
 :: download Clang sources
 
-powershell "Invoke-WebRequest -Uri %CLANG_DOWNLOAD_URL% -OutFile %WORKING_DIR%\%CLANG_DOWNLOAD_FILE%"
+curl -fLo %WORKING_DIR%\%CLANG_DOWNLOAD_FILE% %CLANG_DOWNLOAD_URL%
 7z x -y %WORKING_DIR%\%CLANG_DOWNLOAD_FILE% -o%WORKING_DIR%
 7z x -y %WORKING_DIR%\%CLANG_DOWNLOAD_FILE_PREFIX%%LLVM_VERSION%.src.tar -o%WORKING_DIR%
 ren %WORKING_DIR%\%CLANG_DOWNLOAD_FILE_PREFIX%%LLVM_VERSION%.src clang
@@ -96,9 +97,8 @@ echo endif() >> %PATCH_TARGET%
 
 :: download and unpack LLVM release package from llvm-package-windows
 
-powershell "Invoke-WebRequest -Uri %LLVM_RELEASE_URL% -OutFile %WORKING_DIR%\%LLVM_RELEASE_FILE%"
+curl -fL -o %WORKING_DIR%\%LLVM_RELEASE_FILE% %LLVM_RELEASE_URL%
 7z x -y %WORKING_DIR%\%LLVM_RELEASE_FILE% -o%WORKING_DIR%
-;;
 
 goto :eof
 
