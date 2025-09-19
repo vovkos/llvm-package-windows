@@ -4,10 +4,36 @@ if not exist %WORKING_DIR% mkdir %WORKING_DIR%
 
 ::..............................................................................
 
+if /i "%BUILD_MASTER%" == "true" (
+	git clone --depth=1 %LLVM_MASTER_URL% %WORKING_DIR%\llvm-git
+	move %WORKING_DIR%\llvm-git\%BUILD_PROJECT% %WORKING_DIR%
+	if exist %WORKING_DIR%\llvm-git\cmake move %WORKING_DIR%\llvm-git\cmake %WORKING_DIR%
+	if exist %WORKING_DIR%\llvm-git\third-party move %WORKING_DIR%\llvm-git\third-party %WORKING_DIR%
+	goto :eof
+)
+
+::..............................................................................
+
+if not "%LLVM_CMAKE_DOWNLOAD_URL%" == "" (
+	powershell "Invoke-WebRequest -Uri %LLVM_CMAKE_DOWNLOAD_URL% -OutFile %WORKING_DIR%\%LLVM_CMAKE_DOWNLOAD_FILE%"
+	7z x -y %WORKING_DIR%\%LLVM_CMAKE_DOWNLOAD_FILE% -o%WORKING_DIR%
+	7z x -y %WORKING_DIR%\cmake-%LLVM_VERSION%.src.tar -o%WORKING_DIR%
+	ren %WORKING_DIR%\cmake-%LLVM_VERSION%.src cmake
+)
+
+if not "%LLVM_THIRD_PARTY_DOWNLOAD_URL%" == "" (
+	powershell "Invoke-WebRequest -Uri %LLVM_THIRD_PARTY_DOWNLOAD_URL% -OutFile %WORKING_DIR%\%LLVM_THIRD_PARTY_DOWNLOAD_FILE%"
+	7z x -y %WORKING_DIR%\%LLVM_THIRD_PARTY_DOWNLOAD_FILE% -o%WORKING_DIR%
+	7z x -y %WORKING_DIR%\third-party-%LLVM_VERSION%.src.tar -o%WORKING_DIR%
+	ren %WORKING_DIR%\third-party-%LLVM_VERSION%.src third-party
+)
+
+::..............................................................................
+
 if /i "%BUILD_PROJECT%" == "llvm" goto :llvm
 if /i "%BUILD_PROJECT%" == "clang" goto :clang
 
-echo Invalid argument: '%1'
+echo Invalid BUILD_PROJECT: %BUILD_PROJECT%
 exit -1
 
 ::..............................................................................
@@ -16,23 +42,10 @@ exit -1
 
 :: download LLVM sources
 
-if /i "%BUILD_MASTER%" == "true" (
-	git clone --depth=1 %LLVM_MASTER_URL% %WORKING_DIR%\llvm-git
-	move %WORKING_DIR%\llvm-git\llvm %WORKING_DIR%
-	if exist %WORKING_DIR%\llvm-git\cmake move %WORKING_DIR%\llvm-git\cmake %WORKING_DIR%
-) else (
-	powershell "Invoke-WebRequest -Uri %LLVM_DOWNLOAD_URL% -OutFile %WORKING_DIR%\%LLVM_DOWNLOAD_FILE%"
-	7z x -y %WORKING_DIR%\%LLVM_DOWNLOAD_FILE% -o%WORKING_DIR%
-	7z x -y %WORKING_DIR%\llvm-%LLVM_VERSION%.src.tar -o%WORKING_DIR%
-	ren %WORKING_DIR%\llvm-%LLVM_VERSION%.src llvm
-
-	if not "%LLVM_CMAKE_DOWNLOAD_URL%" == "" (
-		powershell "Invoke-WebRequest -Uri %LLVM_CMAKE_DOWNLOAD_URL% -OutFile %WORKING_DIR%\%LLVM_CMAKE_DOWNLOAD_FILE%"
-		7z x -y %WORKING_DIR%\%LLVM_CMAKE_DOWNLOAD_FILE% -o%WORKING_DIR%
-		7z x -y %WORKING_DIR%\cmake-%LLVM_VERSION%.src.tar -o%WORKING_DIR%
-		ren %WORKING_DIR%\cmake-%LLVM_VERSION%.src cmake
-	)
-)
+powershell "Invoke-WebRequest -Uri %LLVM_DOWNLOAD_URL% -OutFile %WORKING_DIR%\%LLVM_DOWNLOAD_FILE%"
+7z x -y %WORKING_DIR%\%LLVM_DOWNLOAD_FILE% -o%WORKING_DIR%
+7z x -y %WORKING_DIR%\llvm-%LLVM_VERSION%.src.tar -o%WORKING_DIR%
+ren %WORKING_DIR%\llvm-%LLVM_VERSION%.src llvm
 
 if "%CONFIGURATION%" == "Debug" goto dbg
 goto :eof
@@ -58,23 +71,10 @@ goto :eof
 
 :: download Clang sources
 
-if /i "%BUILD_MASTER%" == "true" (
-	git clone --depth=1 %LLVM_MASTER_URL% %WORKING_DIR%\llvm-git
-	move %WORKING_DIR%\llvm-git\clang %WORKING_DIR%
-	if exist %WORKING_DIR%\llvm-git\cmake move %WORKING_DIR%\llvm-git\cmake %WORKING_DIR%
-) else (
-	powershell "Invoke-WebRequest -Uri %CLANG_DOWNLOAD_URL% -OutFile %WORKING_DIR%\%CLANG_DOWNLOAD_FILE%"
-	7z x -y %WORKING_DIR%\%CLANG_DOWNLOAD_FILE% -o%WORKING_DIR%
-	7z x -y %WORKING_DIR%\%CLANG_DOWNLOAD_FILE_PREFIX%%LLVM_VERSION%.src.tar -o%WORKING_DIR%
-	ren %WORKING_DIR%\%CLANG_DOWNLOAD_FILE_PREFIX%%LLVM_VERSION%.src clang
-
-	if not "%LLVM_CMAKE_DOWNLOAD_URL%" == "" (
-		powershell "Invoke-WebRequest -Uri %LLVM_CMAKE_DOWNLOAD_URL% -OutFile %WORKING_DIR%\%LLVM_CMAKE_DOWNLOAD_FILE%"
-		7z x -y %WORKING_DIR%\%LLVM_CMAKE_DOWNLOAD_FILE% -o%WORKING_DIR%
-		7z x -y %WORKING_DIR%\cmake-%LLVM_VERSION%.src.tar -o%WORKING_DIR%
-		ren %WORKING_DIR%\cmake-%LLVM_VERSION%.src cmake
-	)
-)
+powershell "Invoke-WebRequest -Uri %CLANG_DOWNLOAD_URL% -OutFile %WORKING_DIR%\%CLANG_DOWNLOAD_FILE%"
+7z x -y %WORKING_DIR%\%CLANG_DOWNLOAD_FILE% -o%WORKING_DIR%
+7z x -y %WORKING_DIR%\%CLANG_DOWNLOAD_FILE_PREFIX%%LLVM_VERSION%.src.tar -o%WORKING_DIR%
+ren %WORKING_DIR%\%CLANG_DOWNLOAD_FILE_PREFIX%%LLVM_VERSION%.src clang
 
 perl compare-versions.pl %LLVM_VERSION% 11
 if %errorlevel% == -1 goto nobigobj
