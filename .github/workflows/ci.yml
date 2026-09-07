@@ -9,10 +9,10 @@ jobs:
         name: Windows Build
         runs-on: ${{matrix.TARGET_CPU == 'arm64' && 'windows-11-arm' || 'windows-2022'}}
         env:
-            BUILD_PROJECT: clang
+            BUILD_PROJECT: llvm
             BUILD_MASTER: false
-            LLVM_VERSION: 21.1.1
-            FORCE_ARTIFACTS: false
+            LLVM_VERSION: 14.0.6
+            FORCE_ARTIFACTS: true
 
         strategy:
             fail-fast: false
@@ -22,8 +22,8 @@ jobs:
                 -   libcmt
 
                 TARGET_CPU:
-                -   x86
-                -   amd64
+                # -   x86
+                # -   amd64
                 -   arm64
 
                 CONFIGURATION:
