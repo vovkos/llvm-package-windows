@@ -12,6 +12,7 @@ jobs:
             BUILD_PROJECT: clang
             BUILD_MASTER: false
             LLVM_VERSION: 21.1.1
+            FORCE_ARTIFACTS: false
 
         strategy:
             fail-fast: false
@@ -48,9 +49,10 @@ jobs:
                 echo DEPLOY_FILE=%DEPLOY_FILE%>>%GITHUB_OUTPUT%
 
         -   name: Release
-            if: startsWith(github.ref, 'refs/tags/')
             uses: softprops/action-gh-release@v2
+            if: startsWith(github.ref, 'refs/tags/') || env.FORCE_ARTIFACTS == 'true'
             env:
                 GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
             with:
+                tag_name: ${{env.BUILD_PROJECT}}-${{env.LLVM_VERSION}}
                 files: ${{steps.BUILD.outputs.DEPLOY_FILE}}
