@@ -19,13 +19,13 @@ exit -1
 
 mkdir llvm\build
 cd llvm\build
-cmake .. %LLVM_CMAKE_CONFIGURE_FLAGS%
-cmake --build . %CMAKE_BUILD_FLAGS%
-cmake --build . --target install %CMAKE_BUILD_FLAGS%
+cmake .. %LLVM_CMAKE_CONFIGURE_FLAGS% || exit
+cmake --build . %CMAKE_BUILD_FLAGS% || exit
+cmake --build . --target install %CMAKE_BUILD_FLAGS% || exit
 
 cd %THIS_DIR%
 
-7z a -t7z %GITHUB_WORKSPACE%\%LLVM_RELEASE_FILE% %LLVM_RELEASE_NAME%
+7z a -t7z %GITHUB_WORKSPACE%\%LLVM_RELEASE_FILE% %LLVM_RELEASE_NAME% || exit
 
 goto :eof
 
@@ -35,13 +35,13 @@ goto :eof
 
 mkdir clang\build
 cd clang\build
-cmake .. %CLANG_CMAKE_CONFIGURE_FLAGS%
-cmake --build . %CMAKE_BUILD_FLAGS%
-cmake --build . --target install %CMAKE_BUILD_FLAGS%
+cmake .. %CLANG_CMAKE_CONFIGURE_FLAGS% || exit
+cmake --build . %CMAKE_BUILD_FLAGS% || exit
+cmake --build . --target install %CMAKE_BUILD_FLAGS% || exit
 
 cd %THIS_DIR%
 
-7z a -t7z %GITHUB_WORKSPACE%\%CLANG_RELEASE_FILE% %CLANG_RELEASE_NAME%
+7z a -t7z %GITHUB_WORKSPACE%\%CLANG_RELEASE_FILE% %CLANG_RELEASE_NAME% || exit
 
 goto :eof
 
