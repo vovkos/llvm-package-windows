@@ -15,6 +15,8 @@ if /i "%1" == "i386" goto :x86
 if /i "%1" == "amd64" goto :amd64
 if /i "%1" == "x86_64" goto :amd64
 if /i "%1" == "x64" goto :amd64
+if /i "%1" == "arm64" goto :arm64
+if /i "%1" == "aarch64" goto :arm64
 if /i "%1" == "msvc10" goto :msvc10
 if /i "%1" == "msvc12" goto :msvc12
 if /i "%1" == "msvc14" goto :msvc14
@@ -39,6 +41,8 @@ exit -1
 set TARGET_CPU=x86
 set CMAKE_GENERATOR_SUFFIX=
 set CMAKE_ARCH_OPTIONS=-A Win32
+set CMAKE_HOST_OPTIONS=-Thost=x64
+set LLVM_TARGET=X86
 shift
 goto :loop
 
@@ -46,6 +50,17 @@ goto :loop
 set TARGET_CPU=amd64
 set CMAKE_GENERATOR_SUFFIX= Win64
 set CMAKE_ARCH_OPTIONS=-A x64
+set CMAKE_HOST_OPTIONS=-Thost=x64
+set LLVM_TARGET=X86
+shift
+goto :loop
+
+:arm64
+set TARGET_CPU=arm64
+set CMAKE_GENERATOR_SUFFIX=
+set CMAKE_ARCH_OPTIONS=-A ARM64
+set CMAKE_HOST_OPTIONS=
+set LLVM_TARGET=AArch64
 shift
 goto :loop
 
@@ -116,7 +131,7 @@ goto :loop
 :release
 set CONFIGURATION=Release
 set DEBUG_SUFFIX=
-set LLVM_TARGETS=X86;NVPTX;AMDGPU
+set LLVM_EXTRA_TARGETS=;NVPTX;AMDGPU
 set LLVM_CMAKE_CONFIGURE_EXTRA_FLAGS=
 set CLANG_CMAKE_CONFIGURE_EXTRA_FLAGS=
 shift
@@ -128,7 +143,7 @@ goto :loop
 :dbg
 set CONFIGURATION=Debug
 set DEBUG_SUFFIX=-dbg
-set LLVM_TARGETS=X86
+set LLVM_EXTRA_TARGETS=
 set LLVM_CMAKE_CONFIGURE_EXTRA_FLAGS=-DLLVM_BUILD_TOOLS=OFF
 set CLANG_CMAKE_CONFIGURE_EXTRA_FLAGS=-DCLANG_BUILD_TOOLS=OFF
 shift
@@ -154,8 +169,11 @@ if "%TARGET_CPU%" == "" goto :amd64
 if "%TOOLCHAIN%" == "" goto :msvc14
 if "%CRT%" == "" goto :libcmt
 if "%CONFIGURATION%" == "" goto :release
-if "%CMAKE_USE_ARCH_OPTIONS%" == "" (set CMAKE_GENERATOR=%CMAKE_GENERATOR%%CMAKE_ARCH_SUFFIX%)
-if not "%CMAKE_USE_ARCH_OPTIONS%" == "" (set CMAKE_OPTIONS=%CMAKE_OPTIONS%%CMAKE_ARCH_OPTIONS%)
+
+set CMAKE_OPTIONS=%CMAKE_HOST_OPTIONS%
+
+if "%CMAKE_USE_ARCH_OPTIONS%" == "" (set CMAKE_GENERATOR=%CMAKE_GENERATOR%%CMAKE_GENERATOR_SUFFIX%)
+if not "%CMAKE_USE_ARCH_OPTIONS%" == "" (set CMAKE_OPTIONS=%CMAKE_OPTIONS% %CMAKE_ARCH_OPTIONS%)
 
 set TAR_SUFFIX=.tar.xz
 perl compare-versions.pl %LLVM_VERSION% 3.5.0
@@ -206,10 +224,9 @@ if %errorlevel% == -1 set LLVM_CMAKE_CRT_FLAGS= ^
 set LLVM_CMAKE_CONFIGURE_FLAGS= ^
 	-G "%CMAKE_GENERATOR%" ^
 	%CMAKE_OPTIONS% ^
-	-Thost=x64 ^
 	-DCMAKE_INSTALL_PREFIX=%LLVM_RELEASE_DIR% ^
 	-DCMAKE_DISABLE_FIND_PACKAGE_LibXml2=TRUE ^
-	-DLLVM_TARGETS_TO_BUILD=%LLVM_TARGETS% ^
+	-DLLVM_TARGETS_TO_BUILD=%LLVM_TARGET%%LLVM_EXTRA_TARGETS% ^
 	-DLLVM_ENABLE_TERMINFO=OFF ^
 	-DLLVM_ENABLE_ZLIB=OFF ^
 	-DLLVM_INCLUDE_BENCHMARKS=OFF ^

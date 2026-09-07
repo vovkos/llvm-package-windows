@@ -7,7 +7,7 @@ on:
 jobs:
     windowsBuild:
         name: Windows Build
-        runs-on: windows-2022
+        runs-on: ${{matrix.TARGET_CPU == 'arm64' && 'windows-11-arm' || 'windows-2022'}}
         env:
             BUILD_PROJECT: clang
             BUILD_MASTER: false
@@ -23,6 +23,7 @@ jobs:
                 TARGET_CPU:
                 -   x86
                 -   amd64
+                -   arm64
 
                 CONFIGURATION:
                 -   Debug
